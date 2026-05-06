@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create *)",
+      "PowerShell(npm create vite@latest . -- --template react 2>&1)",
+      "PowerShell(Get-Command node -ErrorAction SilentlyContinue; Get-Command npm -ErrorAction SilentlyContinue; Get-Command npx -ErrorAction SilentlyContinue; $env:PATH -split ';' | Where-Object { $_ -match 'node|npm|nvm' })",
+      "PowerShell(Test-Path \"C:\\\\Program Files\\\\nodejs\\\\npm.cmd\"; Test-Path \"$env:APPDATA\\\\nvm\"; Test-Path \"$env:LOCALAPPDATA\\\\fnm\"; ls \"C:\\\\Program Files\\\\nodejs\\\\\" -ErrorAction SilentlyContinue | Select-Object -First 5; ls \"$env:APPDATA\\\\nvm\" -ErrorAction SilentlyContinue | Select-Object -First 5)",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "WebSearch",
+      "WebFetch(domain:logotyp.us)",
+      "WebFetch(domain:www.re.design)"
+    ]
+  }
+}

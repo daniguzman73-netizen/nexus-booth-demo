@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    @apply h-full w-full overflow-hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Suppress tap highlight on kiosk */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  input, textarea {
+    user-select: text;
+  }
+}
+
+@layer utilities {
+  /* Full-screen kiosk utility */
+  .kiosk-full {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* Touch-friendly minimum target */
+  .touch-target {
+    min-height: 60px;
+    min-width: 60px;
+  }
+}
