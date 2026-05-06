@@ -110,7 +110,7 @@ export default function InstitutionSelect({ onSelect, onBack }) {
             Which library are you from?
           </h1>
           <p className="text-xl text-gray-500 mb-10">
-            We'll personalize your demo with your library's branding and access.
+            We'll personalize your demo with your library's resources.
           </p>
 
           {/* ── Search input ───────────────────────────────────── */}
@@ -211,10 +211,6 @@ export default function InstitutionSelect({ onSelect, onBack }) {
             Skip — use generic branding
           </button>
 
-          <p className="mt-4 text-center text-gray-400 text-sm leading-relaxed">
-            Your library selection personalizes the Nexus demo with real access info and branding.
-            <br />No account needed.
-          </p>
         </div>
       </div>
     </div>
