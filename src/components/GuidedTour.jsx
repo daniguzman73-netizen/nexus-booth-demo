@@ -158,7 +158,7 @@ export default function GuidedTour({ session, onNext }) {
         <div className="min-w-[100px]" />
       </div>
 
-      <div className="flex-1 overflow-y-auto px-8 py-8">
+      <div className="px-8 py-8">
         <div className="max-w-2xl mx-auto flex flex-col gap-6">
 
           {/* Step header */}

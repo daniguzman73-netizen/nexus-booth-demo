@@ -4,7 +4,7 @@
 
 @layer base {
   html, body, #root {
-    @apply h-full w-full;
+    @apply w-full;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

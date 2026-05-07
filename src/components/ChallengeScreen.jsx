@@ -131,8 +131,8 @@ export default function ChallengeScreen({ session, onSubmit }) {
   return (
     <div className="kiosk-full bg-[#F3F4F6] flex flex-col">
 
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
+      {/* Top bar — sticky so timer stays visible while scrolling */}
+      <div className="sticky top-0 z-20 flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
         <div className="flex items-center gap-3">
           <NexusLogo size={30} />
           <span className="text-gray-700 font-semibold">Nexus Extend</span>
@@ -156,11 +156,11 @@ export default function ChallengeScreen({ session, onSubmit }) {
 
       <Timer running={!submitted} onTick={handleTick} onExpire={handleSubmit} seconds={60} />
 
-      {/* Body — two columns */}
-      <div className="flex-1 flex overflow-hidden" style={{ minHeight: 0 }}>
+      {/* Body — two columns, natural page scroll */}
+      <div className="flex">
 
         {/* Left: AI response */}
-        <div className="flex-[3] overflow-y-auto px-8 py-6">
+        <div className="flex-[3] px-8 py-6">
           <div className="max-w-2xl mx-auto">
 
             {/* AI assistant header */}
@@ -213,7 +213,7 @@ export default function ChallengeScreen({ session, onSubmit }) {
         </div>
 
         {/* Right: citation cards */}
-        <div className="flex-[2] overflow-y-auto px-5 py-6 border-l border-gray-200 bg-[#F3F4F6]">
+        <div className="flex-[2] px-5 py-6 border-l border-gray-200 bg-[#F3F4F6]">
           <div className="flex flex-col gap-3">
             <p className="text-gray-500 text-xs font-semibold uppercase tracking-widest mb-1 px-1">
               Citations — flag any you doubt
