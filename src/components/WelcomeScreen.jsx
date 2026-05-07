@@ -73,10 +73,10 @@ export default function WelcomeScreen({ onStart }) {
       {/* ── Main content ────────────────────────────────────────── */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-16">
 
-        {/* Headline */}
+        {/* Headline — always one line at 1280px+ */}
         <h1
-          className="font-black text-gray-900 leading-[1.05] tracking-tight mb-8 max-w-[18ch]"
-          style={{ fontSize: 'clamp(72px, 7.5vw, 118px)' }}
+          className="font-black text-gray-900 leading-[1.05] tracking-tight mb-8 whitespace-nowrap"
+          style={{ fontSize: 'clamp(56px, 5.6vw, 108px)' }}
         >
           "AI can make mistakes."
         </h1>

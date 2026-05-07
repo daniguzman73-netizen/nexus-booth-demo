@@ -62,7 +62,7 @@ export default function DisciplineSelect({ institution, onSelect, onBack }) {
       </div>
 
       {/* ── Main content ────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col items-center px-14 pt-4 pb-10">
+      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col items-center px-14 pt-4 pb-10">
         <div className="w-full max-w-[1400px]">
 
           {/* Header */}

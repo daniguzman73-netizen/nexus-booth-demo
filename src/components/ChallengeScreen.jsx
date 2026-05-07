@@ -158,8 +158,12 @@ export default function ChallengeScreen({ session, onSubmit }) {
   return (
     <div className="kiosk-full bg-[#F3F4F6] flex flex-col">
 
-      {/* Top bar — sticky so timer stays visible while scrolling */}
-      <div className="sticky top-0 z-20 flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
+      {/* Single scroll context for the whole screen — sticky top bar lives
+          inside it so the timer stays visible during scroll. */}
+      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col">
+
+      {/* Top bar — sticky inside the inner scroll container */}
+      <div className="sticky top-0 z-20 flex-shrink-0 flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
         <div className="flex items-center gap-3">
           <NexusLogo size={30} />
           <span className="text-gray-700 font-semibold">Nexus Extend</span>
@@ -264,6 +268,8 @@ export default function ChallengeScreen({ session, onSubmit }) {
             </div>
           )}
         </div>
+      </div>
+      {/* /inner scroll container */}
       </div>
     </div>
   )

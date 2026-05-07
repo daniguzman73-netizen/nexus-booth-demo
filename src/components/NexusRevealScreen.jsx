@@ -483,7 +483,7 @@ export default function NexusRevealScreen({ session, onNext }) {
       </div>
 
       {/* Live Nexus mockup */}
-      <div className="flex-1 px-8 py-6">
+      <div className="flex-1 min-h-0 overflow-y-auto px-8 py-6">
         <div className="max-w-[1280px] mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
 
           <ChatTabs />
