@@ -40,13 +40,29 @@ function TimerRing({ seconds, total = 60 }) {
   )
 }
 
+function FieldRow({ label, value, mono }) {
+  const empty = value == null || value === ''
+  return (
+    <div className="flex items-baseline gap-2 min-w-0">
+      <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest flex-shrink-0 w-[68px]">
+        {label}
+      </span>
+      <span
+        className={`text-gray-700 text-xs leading-snug min-w-0 flex-1 ${mono ? 'font-mono' : ''} ${empty ? 'italic text-gray-400' : ''}`}
+        style={{ wordBreak: 'break-word' }}
+      >
+        {empty ? 'Not provided' : value}
+      </span>
+    </div>
+  )
+}
+
 function CitationCard({ citation, flagged, onToggle }) {
   const isFlagged = flagged
 
   return (
-    <button
-      onPointerDown={onToggle}
-      className="w-full text-left rounded-2xl p-5 border-2 transition-all duration-150 select-none"
+    <div
+      className="w-full rounded-2xl border-2 transition-all duration-150 select-none overflow-hidden"
       style={{
         background: isFlagged ? 'rgba(200,16,46,0.04)' : 'white',
         borderColor: isFlagged ? '#C8102E' : '#E5E7EB',
@@ -55,46 +71,57 @@ function CitationCard({ citation, flagged, onToggle }) {
           : '0 1px 3px rgba(0,0,0,0.06)',
       }}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-2">
-            <span
-              className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-white"
-              style={{ background: isFlagged ? '#C8102E' : '#9CA3AF' }}
-            >
-              {citation.id}
-            </span>
-            <span className="text-gray-400 text-xs font-medium truncate">
-              {citation.journal} · {citation.year}
-            </span>
-          </div>
-          <p className="text-gray-800 text-sm leading-relaxed line-clamp-3 font-medium">
-            {citation.title}
-          </p>
-          <p className="text-gray-400 text-xs mt-1 truncate">{citation.authors}</p>
-        </div>
-
-        {/* Flag toggle */}
-        <div
-          className="flex-shrink-0 flex flex-col items-center gap-1 pt-1"
-        >
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center transition-all"
-            style={{
-              background: isFlagged ? '#C8102E' : '#F3F4F6',
-            }}
+      {/* Header — citation number + flag button */}
+      <div
+        className="flex items-center justify-between gap-3 px-4 py-2.5 border-b"
+        style={{
+          background: isFlagged ? 'rgba(200,16,46,0.06)' : '#FAFAFA',
+          borderColor: isFlagged ? 'rgba(200,16,46,0.18)' : '#F3F4F6',
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <span
+            className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-white"
+            style={{ background: isFlagged ? '#C8102E' : '#9CA3AF' }}
           >
-            {isFlagged
-              ? <span className="text-white text-lg">🚩</span>
-              : <span className="text-gray-400 text-lg">🏳️</span>
-            }
-          </div>
-          <span className="text-xs font-semibold" style={{ color: isFlagged ? '#C8102E' : '#9CA3AF' }}>
-            {isFlagged ? 'Flagged' : 'Flag'}
+            {citation.id}
+          </span>
+          <span className="text-gray-500 text-xs font-semibold uppercase tracking-widest">
+            Citation [{citation.id}]
           </span>
         </div>
+
+        <button
+          onPointerDown={onToggle}
+          className="flex items-center gap-2 rounded-lg px-3 py-1.5 transition-all touch-target"
+          style={{
+            background: isFlagged ? '#C8102E' : '#F3F4F6',
+            color: isFlagged ? 'white' : '#6B7280',
+          }}
+        >
+          <span className="text-base leading-none">{isFlagged ? '🚩' : '🏳️'}</span>
+          <span className="text-xs font-bold">
+            {isFlagged ? 'Flagged' : 'Flag'}
+          </span>
+        </button>
       </div>
-    </button>
+
+      {/* Body — structured citation fields */}
+      <div className="px-4 py-3 flex flex-col gap-1.5">
+        <FieldRow label="Authors" value={citation.authors} />
+        <FieldRow label="Title"   value={citation.title} />
+
+        <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+          <FieldRow label="Journal" value={citation.journal} />
+          <FieldRow label="Year"    value={citation.year} />
+        </div>
+
+        <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+          <FieldRow label="Vol/Issue" value={citation.volume_issue} />
+          <FieldRow label="DOI"       value={citation.doi} mono />
+        </div>
+      </div>
+    </div>
   )
 }
 
