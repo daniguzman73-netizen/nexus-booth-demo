@@ -6,7 +6,6 @@ import ScenarioIntro      from './components/ScenarioIntro'
 import ChallengeScreen    from './components/ChallengeScreen'
 import ResultsScreen      from './components/ResultsScreen'
 import NexusRevealScreen  from './components/NexusRevealScreen'
-import GuidedTour         from './components/GuidedTour'
 import LeaderboardEntry   from './components/LeaderboardEntry'
 import FinalScreen        from './components/FinalScreen'
 import useIdleReset       from './lib/useIdleReset'
@@ -68,10 +67,6 @@ export default function App() {
   }
 
   function handleNexusNext() {
-    setScreen('guided_tour')
-  }
-
-  function handleTourNext() {
     setScreen('leaderboard_entry')
   }
 
@@ -135,13 +130,6 @@ export default function App() {
         <NexusRevealScreen
           session={session}
           onNext={handleNexusNext}
-        />
-      )}
-
-      {screen === 'guided_tour' && (
-        <GuidedTour
-          session={session}
-          onNext={handleTourNext}
         />
       )}
 
