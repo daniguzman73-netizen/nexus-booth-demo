@@ -24,7 +24,7 @@ function StepDots({ step }) {
 }
 
 export default function ScenarioIntro({ session, onReady, onBack }) {
-  const [countdown, setCountdown] = useState(5)
+  const [countdown, setCountdown] = useState(12)
   const { discipline, scenario } = session
 
   useEffect(() => {
@@ -68,23 +68,23 @@ export default function ScenarioIntro({ session, onReady, onBack }) {
             {discipline.name}
           </div>
 
-          {/* Question */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 px-12 py-10 mb-10 w-full">
-            <p className="text-gray-400 text-sm font-semibold uppercase tracking-widest mb-3">Research question</p>
-            <p className="text-[1.6rem] font-semibold text-gray-900 leading-snug">
-              "{scenario.question}"
-            </p>
-          </div>
-
-          {/* Instructions */}
-          <div className="flex items-start gap-5 bg-[#5E33BF]/8 border border-[#5E33BF]/20 rounded-2xl px-8 py-6 mb-10 text-left w-full">
-            <span className="text-3xl mt-0.5">🎯</span>
+          {/* Instructions — moved above the research question, now larger */}
+          <div className="flex items-start gap-5 bg-[#5E33BF]/8 border border-[#5E33BF]/20 rounded-2xl px-9 py-7 mb-8 text-left w-full">
+            <span className="text-4xl mt-0.5">🎯</span>
             <div>
-              <p className="text-gray-800 font-semibold text-lg mb-1">Your challenge</p>
-              <p className="text-gray-600 text-base leading-relaxed">
+              <p className="text-gray-900 font-bold text-2xl mb-2">Your challenge</p>
+              <p className="text-gray-700 text-lg leading-relaxed">
                 An AI assistant answered this question and cited 5 sources. Read the response, then flag any citations you think have problems — predatory journals, unreviewed preprints, inaccessible papers, or hallucinations.
               </p>
             </div>
+          </div>
+
+          {/* Question — smaller, below the challenge */}
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 px-10 py-7 mb-10 w-full">
+            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-2">Research question</p>
+            <p className="text-[1.15rem] font-medium text-gray-900 leading-snug">
+              "{scenario.question}"
+            </p>
           </div>
 
           {/* Stats */}
