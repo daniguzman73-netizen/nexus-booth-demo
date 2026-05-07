@@ -41,11 +41,6 @@ export default function DisciplineSelect({ institution, onSelect, onBack }) {
   const [hovered, setHovered] = useState(null)
   const [pressed, setPressed]  = useState(null)
 
-  // Strip trailing "Libraries / Library" for a tidy display name
-  const libName = institution
-    ? institution.replace(/\s+(Libraries?|Library System?|Librar\w*)$/i, '').split(',')[0]
-    : null
-
   return (
     <div className="kiosk-full bg-[#F3F4F6] flex flex-col">
 
@@ -67,7 +62,7 @@ export default function DisciplineSelect({ institution, onSelect, onBack }) {
       </div>
 
       {/* ── Main content ────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col items-center justify-center px-14 pb-10">
+      <div className="flex-1 flex flex-col items-center px-14 pt-4 pb-10">
         <div className="w-full max-w-[1400px]">
 
           {/* Header */}
@@ -76,17 +71,7 @@ export default function DisciplineSelect({ institution, onSelect, onBack }) {
               Pick a discipline
             </h1>
             <p className="text-xl text-gray-500">
-              You'll review an AI-generated response on this topic
-              {libName ? (
-                <>
-                  {' '}using{' '}
-                  <span className="font-semibold text-gray-700">{libName}</span>
-                  {' '}resources
-                </>
-              ) : (
-                ' using a demo library'
-              )}
-              .
+              You'll review an AI-generated response on this topic.
             </p>
           </div>
 

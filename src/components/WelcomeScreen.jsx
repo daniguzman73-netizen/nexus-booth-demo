@@ -21,7 +21,7 @@ export default function WelcomeScreen({ onStart }) {
   const entry = TICKER_ENTRIES[tickIdx]
 
   return (
-    <div className="relative kiosk-full bg-[#F3F4F6] flex flex-col overflow-hidden">
+    <div className="relative kiosk-full bg-[#F3F4F6] flex flex-col overflow-x-hidden">
 
       {/* ── Background orbs ─────────────────────────────────────── */}
       <div

@@ -3,10 +3,17 @@
 @tailwind utilities;
 
 @layer base {
-  html, body, #root {
-    @apply w-full;
+  html, body {
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  #root {
+    width: 100%;
+    min-height: 100vh;
   }
 
   /* Suppress tap highlight on kiosk */

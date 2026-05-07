@@ -103,14 +103,14 @@ export default function InstitutionSelect({ onSelect, onBack }) {
       </div>
 
       {/* ── Main content ────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col items-center justify-center px-16 pb-16">
+      <div className="flex-1 flex flex-col items-center px-16 pt-8 pb-16">
         <div className="w-full max-w-2xl">
 
           <h1 className="text-[3.2rem] font-black text-gray-900 mb-3 tracking-tight leading-tight">
             Which library are you from?
           </h1>
           <p className="text-xl text-gray-500 mb-10">
-            We'll personalize your demo with your library's resources.
+            We'll personalize the demo for you.
           </p>
 
           {/* ── Search input ───────────────────────────────────── */}
