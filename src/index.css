@@ -4,7 +4,7 @@
 
 @layer base {
   html, body, #root {
-    @apply h-full w-full overflow-hidden;
+    @apply h-full w-full;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -23,8 +23,8 @@
 @layer utilities {
   /* Full-screen kiosk utility */
   .kiosk-full {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
   }
 
   /* Touch-friendly minimum target */
