@@ -73,25 +73,19 @@ export default function WelcomeScreen({ onStart }) {
       {/* ── Main content ────────────────────────────────────────── */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-16">
 
-        {/* Tag line */}
-        <div className="mb-6 px-5 py-2 rounded-full border border-[#5E33BF]/35 bg-[#5E33BF]/12 inline-flex items-center">
-          <span className="text-[#5E33BF] text-base font-semibold tracking-widest uppercase">
-            Research Citation Challenge
-          </span>
-        </div>
-
         {/* Headline */}
         <h1
-          className="font-black text-gray-900 leading-none tracking-tight mb-6"
+          className="font-black text-gray-900 leading-[1.05] tracking-tight mb-8 max-w-[18ch]"
           style={{ fontSize: 'clamp(72px, 7.5vw, 118px)' }}
         >
-          Spot the Issues!
+          "AI can make mistakes."
         </h1>
 
         {/* Sub-headline */}
-        <p className="text-[1.6rem] text-gray-500 mb-14 leading-relaxed max-w-2xl">
-          Can you catch what AI gets wrong about citations?
+        <p className="text-[1.6rem] text-gray-500 mb-16 leading-relaxed max-w-2xl">
+          Can you spot what AI got wrong about citations?
         </p>
+
         {/* CTA */}
         <button
           onPointerDown={onStart}
@@ -102,7 +96,7 @@ export default function WelcomeScreen({ onStart }) {
         </button>
 
         {/* Stats row */}
-        <div className="mt-9 flex items-center gap-7 text-gray-600 text-lg">
+        <div className="mt-10 flex items-center gap-7 text-gray-600 text-lg">
           <span>⏱ 60 seconds</span>
           <span className="w-1 h-1 rounded-full bg-gray-700" />
           <span>📄 5 citations to check</span>
