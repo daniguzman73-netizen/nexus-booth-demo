@@ -22,6 +22,13 @@
   input, textarea {
     user-select: text;
   }
+
+  /* Global rule: screen-level headlines (h1) must never wrap. Each screen
+     calibrates its own font-size (typically with clamp()) so the headline
+     still fits on one line at 1280–1920px viewport widths. */
+  h1 {
+    white-space: nowrap;
+  }
 }
 
 @layer utilities {
