@@ -267,39 +267,47 @@ The booth demo's mock chat interface and Nexus overlay must visually match the r
 
 ### 7.1 Top-level chrome
 
-The mock browser shows two tabs at the top:
+The mock browser shows tabs at the top:
 - **ChatGPT tab** (left): green ChatGPT logo + "ChatGPT" label
-- **Nexus Setup tab** (middle): purple "ll\" stylized icon + "Nexus Setup" label
-- **Extension puzzle icon** (right): gray puzzle-piece icon
+- **Extension puzzle icon** (right): subtle puzzle-piece icon
 
-Tab styling: white/light gray background, simple horizontal bar across the top of the viewport. The booth demo only needs the ChatGPT tab to be functional; Nexus Setup tab can be visual-only.
+**The "Nexus Setup" tab from earlier mockups should NOT appear in the booth demo.** Only the ChatGPT tab and the extension icon are shown.
+
+Tab styling: white/light gray background, simple horizontal bar across the top of the viewport.
 
 ### 7.2 Chat area (left side)
 
 - White background, full-height
-- User messages: small purple "U" avatar circle on left, message text right of avatar
-- AI messages: green ChatGPT logo avatar on left, message text right of avatar
-- Long-form text in clean serif or sans-serif (match real ChatGPT)
-- Bottom: "Send a message..." input box with a paper-plane send button on right
+- **User avatar:** solid purple/blue rounded square (~40×40px) with a small person/user icon centered. Sits to the left of the user's message text.
+- **AI avatar:** solid GREEN rounded square (~40×40px) with a sparkles ✨ icon centered (NOT purple — green, matching ChatGPT's brand color but with the sparkles icon instead of the ChatGPT logo). Sits to the left of the AI's message text. The green ChatGPT logo proper is reserved for the top tab only.
+- Long-form text in clean sans-serif, comfortable line-height
+- Bottom: input box reading "Message ChatGPT..." with a paper-plane send button on the right (purple background button). Can be hidden during the challenge phase to reduce visual noise.
 
-### 7.3 Inline citation badges (in the chat text)
+### 7.3 Inline citation pills (in the chat text)
 
-Citations appear inline with the prose, not as superscript numbers. Each citation has two adjacent pill-style badges:
+Citations appear inline with the prose. Each citation has TWO adjacent pill-style badges. **In the new design, the author/year pill carries a status icon directly — this is a key change from earlier mockups.**
 
-**Author/year pill** (always present):
-- Light gray/white background
-- Thin gray border, rounded corners (pill shape)
-- Small, readable text: e.g., "Johnson et al., 2023"
-- Tappable — opens the citation popup (see 7.6)
+**Author/year pill (always present, with embedded status):**
+- Pill shape with light gray background and thin border
+- Text: "Author et al., Year" (e.g., "Orben et al., 2022")
+- **Embedded status icon at the right edge of the pill** — visible as part of the pill itself:
+  - ✅ Green checkmark circle — **Verified**
+  - ⚠️ Orange/yellow warning triangle — **Predatory journal** or **Non-scholarly**
+  - 🔒 Gray padlock — **Paywalled / Inaccessible**
+  - ❌ Red X — **Unverified / Possible hallucination**
+- The pill background may also subtly tint to match status (e.g., very light green for verified, light yellow for predatory, light red for unverified) — keep tints subtle, the icon is the primary signal
 
-**Action pill** (always present, immediately to the right):
+**Action pill (always present, immediately to the right of the author pill):**
 - White background with red border and red text
 - Same pill shape
 - Two variants:
-  - **"⊕ Full Text"** — for citations where Nexus has full-text access (the ⊕ is a small globe/circle icon)
+  - **"Full Text"** with a small icon (open book or check) — for citations where Nexus has full-text access
   - **"View Page"** — for citations linking to a webpage rather than a paper
 
 Both pills sit inline with the surrounding text, with small horizontal spacing.
+
+**Critical design note for the booth:**
+- During the **Challenge screen (Screen 5)**, citations should appear *without* the embedded status icon — just the plain author/year + Full Text/View Page pills, identical to what raw ChatGPT output would look like. The status icons are part of the **Nexus reveal (Screen 7)** — they appear on the pills *only after* Nexus "scans" the page. This animation (pills gaining status icons) is the visual payoff of the reveal moment.
 
 ### 7.4 Nexus collapsed state (floating badge)
 
@@ -325,74 +333,98 @@ The booth demo will animate from Variant A to Variant B during the "Nexus scanni
 
 ### 7.5 Nexus expanded sidebar
 
-When the user taps the badge, it expands into a right-side sidebar (~30% of viewport width) that pushes the chat to ~70%.
+When the user taps the badge, it expands into a right-side panel (~30% of viewport width).
 
-**Sidebar header:**
-- Red logo + "UGS Libraries" / "Nexus Academic Assistant" (same as collapsed)
-- Top right: collapse icon (↙) and a panel-toggle icon
-- Below header: two tabs side by side
-  - **"Sources Cited on Page"** (default selected for booth demo)
-  - **"Related Scholarly Sources"**
-- Active tab has bold dark text; inactive tab is gray
+**Sidebar header (white style, consistent across all states):**
 
-**"Sources Cited on Page" content (Image 4 — primary booth view):**
+- White background, full-width
+- Red square logo box on left (~40×40px) with white globe icon
+- "UGS Libraries" (bold, dark, ~18px) on top
+- "Nexus Academic Assistant from Clarivate" (smaller, gray, ~14px) below
+- Top right: expand icon (↗) — used to expand the sidebar to fullscreen, or collapse back to badge
 
-Top section: "Verify Sources Cited by ChatGPT" header with a "9 Detected" counter on the right.
+**Tabs below the header:**
+- **"Sources Cited on Page"** (default selected for booth demo) — pill-style toggle with white background and dark text when active
+- **"Related Scholarly Sources"** — gray text when inactive
 
-Disclaimer banner: *"ChatGPT may not always be right, even if it cites verified sources. Always double-check claims for accuracy."* (small, light gray block)
+**"Sources Cited on Page" content (primary booth view):**
 
-Counts row with three icons:
-- ✅ green circle "**4 Verified**"
-- ⚠️ yellow triangle "**3 Non-Scholarly**"
-- ⛔ red circle-slash "**2 Unverified**"
+Section title: "Sources Cited on Page" (bold, dark)
 
-Below: a scrollable list of citation cards, each with:
-- Title (bold, dark)
-- Authors line (e.g., "Johnson, A., Martinez, R., Chen, L., et al. (2023)")
-- Type tag: "ARTICLE" or "REPORT" in a small gray pill
-- Metadata row: "X citations" / "Y references" / "WoS" badge (where applicable)
-- Status indicator on the right of the card: green check, yellow warning triangle, or red warning
-- For verified: small green text "Available via UGS Libraries" with a book icon
-- For unverified/non-scholarly: small status text "Not peer-reviewed" or similar
+Light gray informational box: *"Checking ChatGPT sources against your library's academic databases. Always double-check ChatGPT claims for accuracy."*
 
-**"Related Scholarly Sources" content (Image 1 / Image 6):**
+**Counts row — simplified two-state in new design:**
+- ✅ green check + "**X Verified**" — followed by gray caption "= Source confirmed for research"
+- ⚠️ orange warning + "**Y Unverified**" — followed by gray caption "= Partial or no academic match"
 
-Header: "Related Scholarly Sources" with green "Available via UGS Libraries" badge on the right.
+(If you have a third state like "Predatory" or "Non-scholarly," it can either be folded into "Unverified" for booth simplicity, or shown as a third row with its own icon and caption.)
 
-Light gray "Why these sources" explainer block, e.g.: *"Based on your conversation about AI and ethics in education — peer-reviewed research on LLM implementation, ethical considerations, and pedagogical approaches."*
+**Citation cards in the list:**
 
-Numbered cards (#1, #2, #3...) with:
-- Title
-- Authors
-- ARTICLE tag
-- Citations / references / WoS badges
-- Journal name + year
-- Green "Available" indicator + a one-line reason ("Directly addresses ethical concerns about AI in education...")
+Each card includes:
+- Title (bold, dark, ~16px)
+- Authors line (gray, smaller): e.g., "Cox, A. M., Pinfield, S., & Rutter, S."
+- Bullet separator + Journal name + year: e.g., "• IFLA Journal (2019)"
+- Metadata row with citation count + small action tags: "📄 156 Web of Science citations ↗" + "Article" pill + "Peer-reviewed" pill
+- **Library availability footer (light gray background panel inside the card):**
+  - Top line: "In UGS Libraries collection • View source details ↗"
+  - Action row: "↗ View Full Text" / "💬 Cite ▾" / "📤 Export to ▾" (all in red)
+- Status indicator on the right edge of the card: green check, orange warning, etc.
 
-### 7.6 Inline citation popup (Image 2)
+**"Related Scholarly Sources" content:**
 
-When the user taps an inline citation pill in the chat, a popup appears anchored to that citation:
+Same overall layout, but cards are numbered (#1, #2, #3...) and include a "Why this source" explainer at the top of the panel.
+
+### 7.6 Inline citation popup — Verified state
+
+When the user taps a verified citation pill in the chat, a popup appears anchored to that citation:
 
 - White card with rounded corners and shadow
-- Document icon top-left
+- Document icon (📄) top-left
 - Title (bold, dark): full paper title
-- Authors line (smaller, gray): e.g., "Johnson, A., Martinez, R., Chen, L., et al. (2023)"
-- Journal + year line: e.g., "Journal of Educational Technology and Society • 2023"
-- Stats row: "📄 142 cited" / "📄 76 refs"
-- **Green badge:** "Available through UGS Libraries"
+- Authors line (smaller, gray with year): e.g., "Cox, A. M., Pinfield, S., & Rutter, S. (2019)"
+- Journal name on its own line: e.g., "IFLA Journal"
+- Stats row: "📄 156 Web of Science citations"
+- **Green availability pill (full width):** "Available through UGS Libraries"
 - **Red CTA button (full width):** "↗ View Full Article"
-- Two secondary buttons below: "Cite" and "Save"
+- Two secondary buttons below: "💬 Cite ▾" and "📤 Export to ▾"
 
-### 7.7 Unverified citation popup (Image 7)
+### 7.7 Inline citation popup — Unverified state
 
 For citations that fail verification, the same popup structure but with different content:
 
-- Red warning triangle icon top-left
-- Title and authors as normal
-- **Red/pink message block:** "This source could not be verified in academic databases."
-- **Red CTA button (full width):** "🔍 Find Verified Alternative"
+- **Open book icon** (📖) top-left (NOT a warning triangle — the icon is neutral; the warning is in the message body)
+- Title (bold, dark): full paper title
+- Authors line with year: e.g., "Peterson, M. (2023)"
+- Journal name on its own line: e.g., "Library Technology Reports"
+- **Red/pink message block:** "**Source not verified.** This source could not be verified in academic databases and may not exist or meet academic research standards. Always verify sources before citing them."
+- **Two action buttons at the bottom (no primary CTA):** "💬 Cite ▾" and "📤 Export to ▾"
 
-This popup is the second-most-important moment for the booth demo — it's the "what does Nexus do for you?" payoff.
+**Important change from earlier mockups:** This popup no longer has a "Find Verified Alternative" CTA button. The path to alternatives is now through the sidebar's "Related Scholarly Sources" tab instead. For the booth demo, when a player taps an unverified citation during Screen 8 step 2, the flow is:
+
+1. Show the unverified popup with the warning message
+2. After ~2 seconds (or on a "See alternatives" tap), close the popup and animate the sidebar to the "Related Scholarly Sources" tab to show 2-3 verified alternatives
+
+This is a slightly less direct path than before, but matches the real product behavior.
+
+### 7.7a Library services panel (lower section of sidebar)
+
+The bottom portion of the Nexus sidebar (visible when scrolling down on either tab, or as a dedicated section) shows library service information:
+
+- **"Library Hours" section** with a clock icon (🕐) header
+  - Weekday rows: "Monday - Thursday: 7:00 AM - 12:00 AM" / "Friday: 7:00 AM - 8:00 PM" / "Saturday: 9:00 AM - 6:00 PM" / "Sunday: 10:00 AM - 12:00 AM"
+  - Each line: day on the left, hours on the right, gray separator
+- **"Contact Information" section** with an envelope icon (✉️) header
+  - Phone number row: "📞 (555) 123-4567" (red text, tappable)
+  - Email row: "✉️ library@ugs.edu" (red text, tappable)
+- **"Quick Links" section** (no icon, bold header)
+  - List of links in red text with external-link icons:
+    - "Research Guides ↗"
+    - "Library Catalog ↗"
+    - "Ask a Librarian ↗"
+    - "Visit Us ↗"
+
+For booth Screen 8 step 3 (Library services), the demo can scroll the sidebar to show this section, OR display it as a focused callout. Either approach communicates the value: *"Nexus surfaces library services where users actually work."*
 
 ### 7.8 Color tokens (extracted from screens)
 
@@ -429,11 +461,13 @@ For the booth flow:
 
 | Booth screen | Nexus state shown |
 |---|---|
-| Screen 5 (Challenge) | Chat only — no Nexus visible. Inline citations show as plain `[1] [2]` markers (not the full Nexus pills) so the player has to evaluate them manually. |
-| Screen 7 (Nexus Reveal) | Animate Nexus collapsed Variant A → Variant B (red "9 sources found"). Then animate to expanded sidebar, "Sources Cited on Page" tab. Each citation in the chat transitions to show the full pill treatment (author/year + Full Text / View Page) with a colored status icon. |
-| Screen 8 step 1 (Full text) | Tap a verified citation → show the inline popup (Image 2) → "View Full Article" → fade to a mock article page |
-| Screen 8 step 2 (Alternatives) | Tap an unverified citation → show the unverified popup (Image 7) → "Find Verified Alternative" → expand sidebar to "Related Scholarly Sources" tab (Image 6) showing 2-3 alternatives |
-| Screen 8 step 3 (Library services) | Expand sidebar with the lower section showing Library Hours / Contact / Quick Links (visible in Image 1) |
+| Screen 5 (Challenge) | Chat only — no Nexus sidebar visible. Inline citations show as plain author/year + Full Text/View Page pills with NO embedded status icons. The player evaluates them manually. |
+| Screen 7 (Nexus Reveal) | Animate Nexus collapsed badge → expanded sidebar (white header style). Each inline citation pill animates to add its embedded status icon (✅ ⚠️ 🔒 ❌) — this is the visual payoff. Sidebar opens to "Sources Cited on Page" tab showing the verified/unverified counts and citation list. |
+| Screen 8 step 1 (Full text) | Tap a verified citation → show the verified popup (section 7.6) → "View Full Article" → fade to a mock article page |
+| Screen 8 step 2 (Alternatives) | Tap an unverified citation → show the unverified popup (section 7.7) with the "Source not verified" message → after ~2 seconds (or user tap), close popup and animate sidebar to "Related Scholarly Sources" tab showing 2-3 verified alternatives |
+| Screen 8 step 3 (Library services) | Scroll sidebar to show the Library Hours / Contact / Quick Links section (section 7.7a) |
+
+**Note on always-on vs scan-and-reveal:** The real Nexus Extend product is "always-on" — citation status icons appear automatically as the page loads. For the booth demo, we deliberately adopt a "scan-and-reveal" pattern: citations start without icons (simulating raw ChatGPT output), then animate to show the icons during Screen 7. This is a stylistic choice to make the value of Nexus more dramatically visible to a booth visitor in a 60-second interaction. The end-state matches the real product; only the transition is theatrical.
 
 ---
 

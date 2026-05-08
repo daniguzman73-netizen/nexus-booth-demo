@@ -1,93 +1,109 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import NexusLogo from './shared/NexusLogo'
 
-// Status visuals — match the Nexus product styling in references/03 and 05/06.
+// ───────────────────────────────────────────────────────────────────────────
+// Status visuals — match SPEC §7 for the new Nexus design
+// ───────────────────────────────────────────────────────────────────────────
 const STATUS = {
   verified: {
     label: 'Verified',
     short: 'Verified',
-    icon: '✓',
+    icon: '✅',
     color:   '#1A7F37',
     bg:      '#DCFCE7',
     border:  '#86EFAC',
     pillBg:  '#F0FDF4',
     pillBorder: '#BBF7D0',
-    panelHeader: 'Available through your library',
-    cta: 'View Full Article',
   },
   predatory: {
-    label: 'Not verified — Predatory journal',
-    short: 'Predatory',
-    icon: '⚠',
-    color:   '#C8102E',
-    bg:      '#FEE2E2',
-    border:  '#FCA5A5',
-    pillBg:  '#FEF2F2',
-    pillBorder: '#FECACA',
-    panelHeader: 'This source could not be verified',
-    cta: 'Find Verified Alternative',
-  },
-  preprint: {
-    label: 'Not yet peer-reviewed',
-    short: 'Preprint',
-    icon: '⚠',
+    label: 'Unverified',
+    short: 'Unverified',
+    icon: '⚠️',
     color:   '#D97706',
     bg:      '#FEF3C7',
     border:  '#FCD34D',
     pillBg:  '#FFFBEB',
     pillBorder: '#FDE68A',
-    panelHeader: 'Preprint — not yet peer-reviewed',
-    cta: 'Find Peer-Reviewed Source',
+  },
+  preprint: {
+    label: 'Unverified',
+    short: 'Unverified',
+    icon: '⚠️',
+    color:   '#D97706',
+    bg:      '#FEF3C7',
+    border:  '#FCD34D',
+    pillBg:  '#FFFBEB',
+    pillBorder: '#FDE68A',
   },
   inaccessible: {
-    label: 'Verified — outside library entitlements',
-    short: 'No access',
+    label: 'Paywalled',
+    short: 'Paywalled',
     icon: '🔒',
-    color:   '#7C3AED',
-    bg:      '#EDE9FE',
-    border:  '#C4B5FD',
-    pillBg:  '#F5F3FF',
-    pillBorder: '#DDD6FE',
-    panelHeader: 'Verified, but outside your library\'s entitlements',
-    cta: 'Find Available Alternative',
+    color:   '#6B7280',
+    bg:      '#F3F4F6',
+    border:  '#D1D5DB',
+    pillBg:  '#F9FAFB',
+    pillBorder: '#E5E7EB',
   },
   unverified: {
-    label: 'Could not be verified',
+    label: 'Unverified',
     short: 'Unverified',
-    icon: '✗',
+    icon: '❌',
     color:   '#C8102E',
     bg:      '#FEE2E2',
     border:  '#FCA5A5',
     pillBg:  '#FEF2F2',
     pillBorder: '#FECACA',
-    panelHeader: 'This source could not be verified in academic databases',
-    cta: 'Find Verified Alternative',
   },
 }
 
 // ───────────────────────────────────────────────────────────────────────────
-// Browser-style tab bar matching reference PNGs
+// Top chrome — only ChatGPT tab + extension puzzle icon (no "Nexus Setup")
 // ───────────────────────────────────────────────────────────────────────────
 function ChatTabs() {
   return (
-    <div className="flex items-end gap-1 px-3 pt-2 bg-[#F3F4F6] border-b border-gray-200">
-      <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-t-lg border border-b-0 border-gray-200 text-sm">
-        <span className="w-4 h-4 rounded-full bg-[#10A37F] flex items-center justify-center text-white text-[10px] font-bold">G</span>
-        <span className="text-gray-700">ChatGPT</span>
+    <div className="flex items-end justify-between px-3 pt-2 bg-[#F3F4F6] border-b border-gray-200">
+      <div className="flex items-end gap-1">
+        <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-t-lg border border-b-0 border-gray-200 text-sm">
+          <span className="w-4 h-4 rounded-full bg-[#10A37F] flex items-center justify-center text-white text-[10px] font-bold">G</span>
+          <span className="text-gray-700">ChatGPT</span>
+        </div>
       </div>
-      <div className="flex items-center gap-2 px-4 py-2 bg-[#F9F8FB] rounded-t-lg border border-b-0 border-gray-200 text-sm">
-        <span className="text-[#5E33BF] text-xs">▥</span>
-        <span className="text-gray-600">Nexus Setup</span>
-      </div>
-      <div className="flex items-center gap-1 px-3 py-2 bg-[#F9F8FB] rounded-t-lg border border-b-0 border-gray-200 text-sm">
-        <span className="text-gray-400 text-xs">🧩</span>
+      <div className="pb-1.5 pr-2">
+        <button className="w-7 h-7 rounded hover:bg-gray-200 flex items-center justify-center text-gray-500" aria-label="Extensions">
+          🧩
+        </button>
       </div>
     </div>
   )
 }
 
 // ───────────────────────────────────────────────────────────────────────────
-// Inline citation pill — author/year + status dot, click to open popup
+// Avatars — purple person (user), green sparkles (AI)
+// ───────────────────────────────────────────────────────────────────────────
+function UserAvatar() {
+  return (
+    <div className="w-10 h-10 rounded-lg bg-[#5E33BF] flex items-center justify-center flex-shrink-0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    </div>
+  )
+}
+
+function AIAvatar() {
+  return (
+    <div className="w-10 h-10 rounded-lg bg-[#10A37F] flex items-center justify-center flex-shrink-0 text-xl leading-none">
+      ✨
+    </div>
+  )
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Inline citation pill — author/year + Full Text/View Page pill
+//   - During scanning: plain `[N]` markers (no status icon)
+//   - After reveal: author/year pill with embedded status icon
 // ───────────────────────────────────────────────────────────────────────────
 function CitationPill({ citation, revealed, onClick }) {
   const status = STATUS[citation.status]
@@ -97,16 +113,18 @@ function CitationPill({ citation, revealed, onClick }) {
 
   if (!revealed) {
     return (
-      <span className="inline-flex items-center gap-1 mx-0.5 align-baseline">
+      <span className="inline-flex items-center gap-1 mx-0.5 align-baseline whitespace-nowrap">
         <span className="inline-flex items-center px-2 py-0.5 rounded-md border bg-white text-xs font-medium text-gray-500"
               style={{ borderColor: '#E5E7EB' }}>
-          [{citation.id}]
+          {label}
+        </span>
+        <span className="inline-flex items-center px-2 py-0.5 rounded-md border bg-white text-xs font-semibold"
+              style={{ borderColor: '#FCA5A5', color: '#C8102E' }}>
+          {citation.status === 'verified' ? '↗ Full Text' : '↗ View Page'}
         </span>
       </span>
     )
   }
-
-  const ctaShort = citation.status === 'verified' ? 'Full Text' : 'View Page'
 
   return (
     <span className="inline-flex items-center gap-1 mx-0.5 align-baseline whitespace-nowrap">
@@ -120,35 +138,32 @@ function CitationPill({ citation, revealed, onClick }) {
         }}
       >
         <span>{label}</span>
-        <span
-          className="w-3.5 h-3.5 rounded-full inline-flex items-center justify-center text-[8px] font-black flex-shrink-0"
-          style={{ background: status.color, color: 'white' }}
-        >
-          {status.icon}
-        </span>
+        <span className="text-[11px] leading-none">{status.icon}</span>
       </button>
       <button
         onPointerDown={onClick}
         className="inline-flex items-center px-2 py-0.5 rounded-md border text-xs font-semibold hover:bg-red-50 transition-all"
         style={{ borderColor: '#FCA5A5', color: '#C8102E', background: 'white' }}
       >
-        {ctaShort}
+        {citation.status === 'verified' ? '↗ Full Text' : '↗ View Page'}
       </button>
     </span>
   )
 }
 
 // ───────────────────────────────────────────────────────────────────────────
-// Citation popup — appears when a pill or sidebar entry is tapped
-// Mirrors PNG 05 (verified) and PNG 06 (unverified/predatory/etc.)
+// Citation popup — verified vs unverified
 // ───────────────────────────────────────────────────────────────────────────
-function CitationPopup({ citation, libName, onClose }) {
-  const status = STATUS[citation.status]
+function CitationPopup({ citation, libName, onClose, onSeeAlternatives }) {
   const isVerified = citation.status === 'verified'
-  const hasAlternatives = citation.alternatives?.length > 0
-  // Synthesize plausible bibliometric numbers for verified
   const cited = isVerified ? Math.floor(50 + (citation.id * 47) % 200) : null
-  const refs  = isVerified ? Math.floor(20 + (citation.id * 31) % 80) : null
+
+  // Auto-close unverified popup after 2s and hand off to alternatives panel
+  useEffect(() => {
+    if (isVerified) return
+    const id = setTimeout(() => onSeeAlternatives?.(citation), 2200)
+    return () => clearTimeout(id)
+  }, [citation, isVerified, onSeeAlternatives])
 
   return (
     <div
@@ -160,13 +175,13 @@ function CitationPopup({ citation, libName, onClose }) {
         onPointerDown={e => e.stopPropagation()}
       >
 
-        {/* Header — title + authors + close */}
+        {/* Header — icon + title + close */}
         <div className="px-5 pt-5 pb-3 flex items-start gap-3">
           <div
-            className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ background: status.bg, color: status.color, fontSize: 20 }}
+            className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-xl"
+            style={{ background: '#F3F4F6', color: '#374151' }}
           >
-            {isVerified ? '📄' : status.icon}
+            {isVerified ? '📄' : '📖'}
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-bold text-gray-900 text-sm leading-snug mb-1">{citation.title}</p>
@@ -187,79 +202,61 @@ function CitationPopup({ citation, libName, onClose }) {
         {/* Verified popup body */}
         {isVerified && (
           <>
-            <div className="px-5 pb-4 flex items-center gap-4 text-xs text-gray-500 border-b border-gray-100">
-              <span>📊 <strong className="text-gray-700">{cited}</strong> cited</span>
-              <span>📚 <strong className="text-gray-700">{refs}</strong> refs</span>
-              <span className="text-gray-400">·</span>
-              <span className="text-gray-400">{citation.journal.split(' ').slice(0, 3).join(' ')}{citation.journal.split(' ').length > 3 ? '…' : ''} · {citation.year}</span>
+            <div className="px-5 pb-3 flex items-center gap-2 text-xs text-gray-500 border-b border-gray-100">
+              <span>📄 <strong className="text-gray-700">{cited}</strong> Web of Science citations</span>
             </div>
 
             <div className="px-5 py-4">
-              <div
-                className="rounded-lg border px-3 py-2 mb-3 flex items-center gap-2 text-xs font-semibold"
-                style={{ background: status.bg, borderColor: status.border, color: status.color }}
-              >
-                <span className="w-4 h-4 rounded-full inline-flex items-center justify-center text-[10px]"
-                      style={{ background: status.color, color: 'white' }}>{status.icon}</span>
+              <div className="bg-[#DCFCE7] border border-[#86EFAC] rounded-lg px-3 py-2 mb-3 flex items-center gap-2 text-xs font-semibold text-[#1A7F37]">
+                <span>✅</span>
                 Available through {libName}
               </div>
 
               <button
-                onPointerDown={() => {}}
                 className="w-full bg-nexus-red hover:bg-nexus-red-dark active:scale-[0.99] text-white font-bold py-3 rounded-lg text-sm transition-all flex items-center justify-center gap-2"
               >
-                <span>📄</span> View Full Article
+                <span>↗</span> View Full Article
               </button>
 
-              <div className="flex gap-3 mt-3 justify-center text-xs">
-                <button className="text-gray-500 hover:text-gray-800 transition-colors px-3 py-1">Cite</button>
-                <span className="text-gray-300">|</span>
-                <button className="text-gray-500 hover:text-gray-800 transition-colors px-3 py-1">Save</button>
+              <div className="grid grid-cols-2 gap-2 mt-2.5">
+                <button className="flex items-center justify-center gap-1.5 border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-2.5 rounded-lg text-xs transition-colors">
+                  💬 Cite <span className="text-gray-400">▾</span>
+                </button>
+                <button className="flex items-center justify-center gap-1.5 border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-2.5 rounded-lg text-xs transition-colors">
+                  📤 Export to <span className="text-gray-400">▾</span>
+                </button>
               </div>
             </div>
           </>
         )}
 
-        {/* Unverified / predatory / preprint / inaccessible popup body */}
+        {/* Unverified popup body */}
         {!isVerified && (
           <>
-            <div className="px-5 pb-4 border-b border-gray-100">
-              <div
-                className="rounded-lg border px-3 py-2.5 flex items-start gap-2"
-                style={{ background: status.bg, borderColor: status.border }}
-              >
-                <span className="w-5 h-5 rounded-full inline-flex items-center justify-center text-[11px] font-black flex-shrink-0 mt-0.5"
-                      style={{ background: status.color, color: 'white' }}>{status.icon}</span>
-                <div className="flex-1">
-                  <p className="text-xs font-bold mb-0.5" style={{ color: status.color }}>{status.short}</p>
-                  <p className="text-xs leading-snug text-gray-700">{citation.nexus_message}</p>
-                </div>
+            <div className="px-5 pb-4">
+              <div className="rounded-lg border bg-[#FEF2F2] border-[#FECACA] px-3.5 py-3">
+                <p className="text-sm font-bold text-[#C8102E] mb-1.5">Source not verified.</p>
+                <p className="text-xs leading-relaxed text-gray-700">
+                  This source could not be verified in academic databases and may not exist or meet academic research standards. Always verify sources before citing them.
+                </p>
+                <button
+                  onPointerDown={() => onSeeAlternatives?.(citation)}
+                  className="mt-2.5 text-xs font-semibold text-[#C8102E] hover:underline"
+                >
+                  See verified alternatives →
+                </button>
               </div>
             </div>
 
-            {hasAlternatives && (
-              <div className="px-5 py-3 bg-gray-50 border-b border-gray-100">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">
-                  ✓ Verified alternatives available
-                </p>
-                <div className="flex flex-col gap-2">
-                  {citation.alternatives.map((alt, i) => (
-                    <div key={i} className="flex items-start gap-2 text-xs leading-snug">
-                      <span className="text-green-600 font-bold flex-shrink-0 mt-0.5">✓</span>
-                      <span className="text-gray-700">{alt.display}</span>
-                    </div>
-                  ))}
-                </div>
+            <div className="px-5 pb-5">
+              <div className="grid grid-cols-2 gap-2">
+                <button className="flex items-center justify-center gap-1.5 border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-2.5 rounded-lg text-xs transition-colors">
+                  💬 Cite <span className="text-gray-400">▾</span>
+                </button>
+                <button className="flex items-center justify-center gap-1.5 border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-2.5 rounded-lg text-xs transition-colors">
+                  📤 Export to <span className="text-gray-400">▾</span>
+                </button>
               </div>
-            )}
-
-            <div className="px-5 py-4">
-              <button
-                onPointerDown={() => {}}
-                className="w-full bg-nexus-red hover:bg-nexus-red-dark active:scale-[0.99] text-white font-bold py-3 rounded-lg text-sm transition-all flex items-center justify-center gap-2"
-              >
-                <span>🔍</span> {status.cta}
-              </button>
             </div>
           </>
         )}
@@ -269,16 +266,304 @@ function CitationPopup({ citation, libName, onClose }) {
 }
 
 // ───────────────────────────────────────────────────────────────────────────
-// Right sidebar — Nexus extension panel ("Sources Cited on Page" tab)
+// Sidebar header — WHITE style (red logo, dark text)
 // ───────────────────────────────────────────────────────────────────────────
-function NexusSidebar({ citations, scanning, libName, onCitationClick }) {
-  const issueCount = citations.filter(c => c.status !== 'verified').length
+function SidebarHeader({ libName }) {
+  return (
+    <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3">
+      <NexusLogo size={40} />
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold leading-tight text-gray-900 truncate">{libName}</p>
+        <p className="text-[11px] text-gray-500 leading-tight truncate">Nexus Academic Assistant from Clarivate</p>
+      </div>
+      <button className="w-7 h-7 rounded hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 flex-shrink-0" aria-label="Expand">
+        ↗
+      </button>
+    </div>
+  )
+}
 
+// ───────────────────────────────────────────────────────────────────────────
+// Tabs row inside the sidebar
+// ───────────────────────────────────────────────────────────────────────────
+function SidebarTabs({ activeTab, setActiveTab }) {
+  return (
+    <div className="grid grid-cols-2 gap-2 px-3 pt-3 pb-2 bg-white border-b border-gray-100">
+      <button
+        onPointerDown={() => setActiveTab('cited')}
+        className={`px-3 py-2 rounded-md text-xs font-bold transition-colors ${
+          activeTab === 'cited' ? 'bg-white text-gray-900 border border-gray-300 shadow-sm' : 'bg-gray-100 text-gray-500'
+        }`}
+      >
+        Sources Cited on Page
+      </button>
+      <button
+        onPointerDown={() => setActiveTab('related')}
+        className={`px-3 py-2 rounded-md text-xs font-bold transition-colors ${
+          activeTab === 'related' ? 'bg-white text-gray-900 border border-gray-300 shadow-sm' : 'bg-gray-100 text-gray-500'
+        }`}
+      >
+        Related Scholarly Sources
+      </button>
+    </div>
+  )
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Citation card — full-width entry in either tab
+// ───────────────────────────────────────────────────────────────────────────
+function CitationCard({ citation, libName, onClick, number }) {
+  const status = STATUS[citation.status]
+  const cited = Math.floor(50 + (citation.id * 47) % 200)
+  const authorsShort = citation.authors.split(',').slice(0, 3).join(',') + (citation.authors.split(',').length > 3 ? ', et al.' : '')
+
+  return (
+    <button
+      onPointerDown={onClick}
+      className="w-full text-left bg-white border border-gray-200 rounded-lg p-3 hover:border-gray-400 hover:bg-gray-50 active:scale-[0.99] transition-all"
+    >
+      <div className="flex items-start gap-2">
+        {number != null && (
+          <span className="w-6 h-6 rounded-full bg-gray-100 text-gray-600 text-xs font-bold flex items-center justify-center flex-shrink-0">
+            {number}
+          </span>
+        )}
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-bold text-gray-900 leading-snug mb-1 line-clamp-2">
+            {citation.title}
+          </p>
+          <p className="text-[10px] text-gray-500 leading-snug truncate">
+            {authorsShort}
+          </p>
+          <p className="text-[10px] text-gray-400 leading-snug truncate">
+            • {citation.journal} ({citation.year})
+          </p>
+
+          <div className="flex items-center gap-2 mt-1.5 text-[10px] text-gray-500">
+            <span>📄 {cited} WoS citations ↗</span>
+          </div>
+
+          <div className="flex items-center gap-1 mt-1.5">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold bg-gray-100 text-gray-600 border border-gray-200">
+              Article
+            </span>
+            {citation.status === 'verified' && (
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold bg-gray-100 text-gray-600 border border-gray-200">
+                Peer-reviewed
+              </span>
+            )}
+          </div>
+
+          {/* Library availability footer */}
+          <div className="mt-2 -mx-1 px-2 py-1.5 bg-gray-50 rounded">
+            <p className="text-[10px] text-gray-500 leading-snug">
+              {citation.status === 'verified'
+                ? <>In <strong className="text-gray-700">{libName}</strong> collection · View source details ↗</>
+                : <>Source not in <strong className="text-gray-700">{libName}</strong> collection ↗</>
+              }
+            </p>
+            <div className="flex items-center gap-2 mt-1 text-[10px] font-semibold" style={{ color: '#C8102E' }}>
+              <span>↗ View Full Text</span>
+              <span className="text-gray-300">·</span>
+              <span>💬 Cite ▾</span>
+              <span className="text-gray-300">·</span>
+              <span>📤 Export to ▾</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Status indicator */}
+        <span
+          className="text-base flex-shrink-0 leading-none mt-0.5"
+          title={status.label}
+        >
+          {status.icon}
+        </span>
+      </div>
+    </button>
+  )
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Library Services panel — bottom of sidebar (SPEC §7.7a)
+// ───────────────────────────────────────────────────────────────────────────
+function LibraryServicesPanel({ libName }) {
+  return (
+    <div className="border-t border-gray-200 bg-white px-4 py-4 flex flex-col gap-4">
+      {/* Library Hours */}
+      <section>
+        <p className="text-xs font-bold text-gray-900 uppercase tracking-wide flex items-center gap-1.5 mb-2">
+          🕐 Library Hours
+        </p>
+        <div className="flex flex-col text-[11px] text-gray-700 divide-y divide-gray-100">
+          {[
+            ['Monday – Thursday', '7:00 AM – 12:00 AM'],
+            ['Friday',            '7:00 AM – 8:00 PM'],
+            ['Saturday',          '9:00 AM – 6:00 PM'],
+            ['Sunday',           '10:00 AM – 12:00 AM'],
+          ].map(([day, hours]) => (
+            <div key={day} className="flex items-center justify-between py-1">
+              <span className="text-gray-500">{day}</span>
+              <span className="font-medium text-gray-800">{hours}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact Information */}
+      <section>
+        <p className="text-xs font-bold text-gray-900 uppercase tracking-wide flex items-center gap-1.5 mb-2">
+          ✉️ Contact Information
+        </p>
+        <div className="flex flex-col gap-1 text-[11px]" style={{ color: '#C8102E' }}>
+          <a className="flex items-center gap-1.5 hover:underline">📞 (555) 123-4567</a>
+          <a className="flex items-center gap-1.5 hover:underline">✉️ library@{libName.toLowerCase().split(' ')[0].replace(/[^a-z]/g, '')}.edu</a>
+        </div>
+      </section>
+
+      {/* Quick Links */}
+      <section>
+        <p className="text-xs font-bold text-gray-900 uppercase tracking-wide mb-2">Quick Links</p>
+        <div className="flex flex-col gap-1 text-[11px] font-semibold" style={{ color: '#C8102E' }}>
+          <a className="hover:underline">Research Guides ↗</a>
+          <a className="hover:underline">Library Catalog ↗</a>
+          <a className="hover:underline">Ask a Librarian ↗</a>
+          <a className="hover:underline">Visit Us ↗</a>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Sources Cited tab content
+// ───────────────────────────────────────────────────────────────────────────
+function CitedTab({ citations, libName, onCitationClick }) {
+  const verifiedCount   = citations.filter(c => c.status === 'verified').length
+  const unverifiedCount = citations.length - verifiedCount
+
+  return (
+    <>
+      <div className="px-4 pt-4 pb-3 bg-white">
+        <p className="text-sm font-bold text-gray-900 mb-2">Sources Cited on Page</p>
+        <p className="text-[11px] text-gray-600 leading-snug bg-gray-50 border border-gray-100 rounded-md px-3 py-2">
+          Checking ChatGPT sources against your library's academic databases. Always double-check ChatGPT claims for accuracy.
+        </p>
+
+        <div className="flex flex-col gap-1.5 mt-3 text-[11px]">
+          <div className="flex items-baseline gap-2">
+            <span className="text-base leading-none">✅</span>
+            <span className="font-bold text-gray-900">{verifiedCount} Verified</span>
+            <span className="text-gray-500">= Source confirmed for research</span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-base leading-none">⚠️</span>
+            <span className="font-bold text-gray-900">{unverifiedCount} Unverified</span>
+            <span className="text-gray-500">= Partial or no academic match</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-3 pb-3 flex flex-col gap-2 bg-white">
+        {citations.map(c => (
+          <CitationCard
+            key={c.id}
+            citation={c}
+            libName={libName}
+            onClick={() => onCitationClick(c)}
+          />
+        ))}
+      </div>
+    </>
+  )
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Related Scholarly Sources tab content
+// ───────────────────────────────────────────────────────────────────────────
+function RelatedTab({ citations, relatedFor, libName, onCitationClick }) {
+  // Determine which alternatives to show: scoped to relatedFor when present,
+  // otherwise the full union across all citations with alternatives.
+  let alts = []
+  if (relatedFor && relatedFor.alternatives?.length) {
+    alts = relatedFor.alternatives.map((a, i) => ({
+      ...synthesizeAltCitation(a, relatedFor.id * 10 + i),
+      source: relatedFor,
+    }))
+  } else {
+    citations.forEach(c => {
+      if (c.alternatives?.length) {
+        c.alternatives.forEach((a, i) => {
+          alts.push({ ...synthesizeAltCitation(a, c.id * 10 + i), source: c })
+        })
+      }
+    })
+  }
+
+  return (
+    <>
+      <div className="px-4 pt-4 pb-3 bg-white">
+        <p className="text-sm font-bold text-gray-900 mb-2">Related Scholarly Sources</p>
+        <p className="text-[11px] text-gray-600 leading-snug bg-gray-50 border border-gray-100 rounded-md px-3 py-2">
+          <strong>Why this source:</strong> Verified, peer-reviewed alternatives from your library's academic collections — relevant to the unverified citation
+          {relatedFor ? <> <em className="not-italic font-semibold">"{relatedFor.title.slice(0, 40)}…"</em></> : null}.
+        </p>
+      </div>
+
+      <div className="px-3 pb-3 flex flex-col gap-2 bg-white">
+        {alts.length === 0 && (
+          <div className="bg-gray-50 border border-gray-100 rounded-md px-3 py-4 text-center text-xs text-gray-400">
+            No alternatives surfaced for this scenario.
+          </div>
+        )}
+        {alts.map((c, i) => (
+          <CitationCard
+            key={c.id}
+            citation={c}
+            libName={libName}
+            number={i + 1}
+            onClick={() => onCitationClick(c)}
+          />
+        ))}
+      </div>
+    </>
+  )
+}
+
+// Build a citation-shaped object out of a `display` string from alternatives[]
+function synthesizeAltCitation(alt, id) {
+  // alt.display looks like: "Last, F. M. (YYYY). Title. Journal."
+  const yearMatch = alt.display.match(/\((\d{4})\)/)
+  const year = yearMatch ? parseInt(yearMatch[1]) : ''
+  // Authors = before "(YYYY)"
+  const authors = (alt.display.split('(')[0] || '').trim().replace(/\.$/, '')
+  // After "(YYYY).", rest is "Title. Journal."
+  const rest = alt.display.replace(/^.*?\)\.\s*/, '')
+  const [titleRaw, journalRaw = ''] = rest.split(/\.\s+(?=[A-Z])/)
+  return {
+    id: `alt-${id}`,
+    status: 'verified',
+    authors,
+    year,
+    title: (titleRaw || alt.display).replace(/\.$/, ''),
+    journal: (journalRaw || '').replace(/\.$/, '') || 'Library-licensed source',
+    alternatives: [],
+  }
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Sidebar — composes header, tabs, the active tab, and library services
+// ───────────────────────────────────────────────────────────────────────────
+function NexusSidebar({
+  citations, scanning, libName,
+  activeTab, setActiveTab,
+  relatedFor,
+  onCitationClick,
+}) {
   if (scanning) {
     return (
-      <aside className="w-[380px] flex-shrink-0 bg-white border-l border-gray-200 flex flex-col">
+      <aside className="w-[400px] flex-shrink-0 bg-white border-l border-gray-200 flex flex-col">
         <SidebarHeader libName={libName} />
-
         <div className="px-4 py-6 flex flex-col items-center gap-4">
           <div
             className="w-full rounded-lg px-4 py-3 flex items-center gap-3"
@@ -301,101 +586,29 @@ function NexusSidebar({ citations, scanning, libName, onCitationClick }) {
   }
 
   return (
-    <aside className="w-[380px] flex-shrink-0 bg-white border-l border-gray-200 flex flex-col">
+    <aside className="w-[400px] flex-shrink-0 bg-gray-50 border-l border-gray-200 flex flex-col overflow-hidden">
       <SidebarHeader libName={libName} />
+      <SidebarTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Tabs */}
-      <div className="grid grid-cols-2 gap-2 px-3 pt-3">
-        <button className="px-3 py-2 rounded-md bg-nexus-red text-white text-xs font-bold">
-          Sources Cited on Page
-        </button>
-        <button className="px-3 py-2 rounded-md bg-gray-100 text-gray-500 text-xs font-semibold">
-          Related Scholarly Sources
-        </button>
-      </div>
-
-      {/* Verify summary */}
-      <div className="px-4 pt-4 pb-3">
-        <div className="flex items-center justify-between mb-2">
-          <p className="text-sm font-bold text-gray-900">Verify Sources Cited by ChatGPT</p>
-          <span className="text-xs font-semibold text-gray-500">{issueCount} Detected</span>
-        </div>
-        <p className="text-[11px] text-gray-500 leading-snug">
-          ChatGPT may not always be right. Even if it cites verified sources, double-check claims for accuracy.
-        </p>
-        <div className="flex items-center gap-3 mt-2 text-[11px] text-gray-600">
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#1A7F37]" />
-            <strong>{citations.length - issueCount}</strong> verified
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#C8102E]" />
-            <strong>{issueCount}</strong> unverified
-          </span>
-        </div>
-      </div>
-
-      {/* Citation list */}
-      <div className="flex-1 overflow-y-auto px-3 pb-3 flex flex-col gap-2">
-        {citations.map(c => {
-          const status = STATUS[c.status]
-          return (
-            <button
-              key={c.id}
-              onPointerDown={() => onCitationClick(c)}
-              className="text-left bg-white border border-gray-200 rounded-lg p-3 hover:border-gray-400 hover:bg-gray-50 active:scale-[0.99] transition-all"
-            >
-              <div className="flex items-start gap-2.5">
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-gray-900 leading-snug mb-1 line-clamp-2">
-                    {c.title}
-                  </p>
-                  <p className="text-[10px] text-gray-500 leading-snug truncate">
-                    {c.authors.split(',').slice(0, 2).join(',')}{c.authors.split(',').length > 2 ? ', et al.' : ''} ({c.year})
-                  </p>
-                  <p className="text-[10px] text-gray-400 italic truncate">
-                    {c.status === 'verified' ? 'ARTICLE' : c.status.toUpperCase()}
-                  </p>
-                </div>
-
-                {/* Status icon */}
-                <span
-                  className="w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black flex-shrink-0"
-                  style={{ background: status.bg, color: status.color }}
-                  title={status.label}
-                >
-                  {status.icon}
-                </span>
-              </div>
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Library footer strip */}
-      <div className="bg-nexus-red text-white px-4 py-2 flex items-center gap-2">
-        <span className="text-[10px]">▥</span>
-        <span className="text-xs font-bold uppercase tracking-wide">{libName}</span>
+      <div className="flex-1 min-h-0 overflow-y-auto bg-white">
+        {activeTab === 'cited' && (
+          <CitedTab
+            citations={citations}
+            libName={libName}
+            onCitationClick={onCitationClick}
+          />
+        )}
+        {activeTab === 'related' && (
+          <RelatedTab
+            citations={citations}
+            relatedFor={relatedFor}
+            libName={libName}
+            onCitationClick={onCitationClick}
+          />
+        )}
+        <LibraryServicesPanel libName={libName} />
       </div>
     </aside>
-  )
-}
-
-function SidebarHeader({ libName }) {
-  return (
-    <div className="bg-nexus-red text-white px-4 py-3 flex items-center gap-3">
-      <div className="w-8 h-8 rounded-md bg-white/15 flex items-center justify-center flex-shrink-0">
-        <span className="text-xs font-black">▥</span>
-      </div>
-      <div className="flex-1">
-        <p className="text-sm font-bold leading-tight">{libName}</p>
-        <p className="text-[11px] text-white/80 leading-tight">Nexus Academic Assistant</p>
-      </div>
-      <div className="flex gap-1 flex-shrink-0">
-        <button className="w-6 h-6 rounded hover:bg-white/15 flex items-center justify-center text-[11px]" aria-label="Edit">✎</button>
-        <button className="w-6 h-6 rounded hover:bg-white/15 flex items-center justify-center text-[11px]" aria-label="Expand">⤢</button>
-      </div>
-    </div>
   )
 }
 
@@ -436,7 +649,9 @@ function renderResponse(text, citationsById, revealed, onPillClick) {
 export default function NexusRevealScreen({ session, onNext }) {
   const { scenario, institution } = session
   const [scanning, setScanning] = useState(true)
-  const [active, setActive] = useState(null) // active citation (popup)
+  const [activeTab, setActiveTab] = useState('cited')
+  const [active, setActive] = useState(null)        // popup citation
+  const [relatedFor, setRelatedFor] = useState(null) // alternatives target
 
   const libName = institution
     ? institution.split(',')[0].replace(/\s+(Libraries?|Library System?|Librar\w*)$/i, '') + ' Library'
@@ -449,11 +664,23 @@ export default function NexusRevealScreen({ session, onNext }) {
     return () => clearTimeout(id)
   }, [])
 
+  function handlePillOrCardClick(c) {
+    setActive(c)
+  }
+
+  // Hand-off from unverified popup → close, switch sidebar tab to Related,
+  // scope the alternatives panel to this citation.
+  function handleSeeAlternatives(c) {
+    setActive(null)
+    setRelatedFor(c)
+    setActiveTab('related')
+  }
+
   return (
     <div className="kiosk-full bg-[#F3F4F6] flex flex-col">
 
       {/* Booth top bar */}
-      <div className="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100">
+      <div className="flex-shrink-0 flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100">
         <div className="flex items-center gap-3">
           <NexusLogo size={28} />
           <span className="text-gray-700 font-semibold">Nexus Extend</span>
@@ -470,7 +697,7 @@ export default function NexusRevealScreen({ session, onNext }) {
 
       {/* Scan banner */}
       <div
-        className="px-8 py-3 text-center text-sm font-medium transition-all"
+        className="flex-shrink-0 px-8 py-3 text-center text-sm font-medium transition-all"
         style={{
           background: scanning ? '#FEE2E2' : '#DCFCE7',
           color:      scanning ? '#C8102E' : '#1A7F37',
@@ -478,7 +705,7 @@ export default function NexusRevealScreen({ session, onNext }) {
       >
         {scanning
           ? '● Nexus is scanning citations against Web of Science and the Central Discovery Index…'
-          : `✓ Scan complete — ${scenario.citations.filter(c => c.status !== 'verified').length} issues found across ${scenario.citations.length} citations, in under 2 seconds`
+          : `✓ Scan complete — ${scenario.citations.filter(c => c.status !== 'verified').length} unverified across ${scenario.citations.length} citations, in under 2 seconds`
         }
       </div>
 
@@ -494,29 +721,27 @@ export default function NexusRevealScreen({ session, onNext }) {
             <div className="flex-1 px-8 py-6 overflow-hidden">
 
               {/* User message */}
-              <div className="flex items-start gap-3 mb-5">
-                <div className="w-7 h-7 rounded-full bg-[#5E33BF] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                  U
-                </div>
-                <p className="text-gray-800 text-base leading-relaxed font-medium pt-0.5">
+              <div className="flex items-start gap-3 mb-6">
+                <UserAvatar />
+                <p className="text-gray-800 text-base leading-relaxed font-medium pt-2">
                   {scenario.question}
                 </p>
               </div>
 
               {/* AI message */}
               <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-full bg-[#10A37F] flex items-center justify-center text-white text-[10px] font-black flex-shrink-0">
-                  G
-                </div>
-                <div className="flex-1 text-gray-800 text-[15px] leading-[1.85] whitespace-pre-line">
-                  {renderResponse(scenario.ai_response, citationsById, !scanning, c => setActive(c))}
+                <AIAvatar />
+                <div className="flex-1 text-gray-800 text-[15px] leading-[1.85] whitespace-pre-line pt-1">
+                  {renderResponse(scenario.ai_response, citationsById, !scanning, handlePillOrCardClick)}
                 </div>
               </div>
 
               {/* Composer (decorative) */}
               <div className="mt-8 bg-gray-100 rounded-xl px-4 py-3 flex items-center gap-3 text-gray-400 text-sm">
-                <span className="flex-1">Send a message…</span>
-                <span className="text-xl">⏵</span>
+                <span className="flex-1">Message ChatGPT…</span>
+                <button className="w-8 h-8 rounded-md bg-[#5E33BF] flex items-center justify-center text-white text-sm" aria-label="Send">
+                  ➤
+                </button>
               </div>
             </div>
 
@@ -525,7 +750,10 @@ export default function NexusRevealScreen({ session, onNext }) {
               citations={scenario.citations}
               scanning={scanning}
               libName={libName}
-              onCitationClick={c => setActive(c)}
+              activeTab={activeTab}
+              setActiveTab={(t) => { setActiveTab(t); if (t === 'cited') setRelatedFor(null) }}
+              relatedFor={relatedFor}
+              onCitationClick={handlePillOrCardClick}
             />
           </div>
         </div>
@@ -533,7 +761,7 @@ export default function NexusRevealScreen({ session, onNext }) {
         {/* Helper hint */}
         {!scanning && !active && (
           <p className="text-center text-gray-500 text-sm mt-5 animate-fade-in">
-            💡 Tap any citation to see how Nexus verified it.
+            💡 Tap any citation pill to see how Nexus verified it.
           </p>
         )}
       </div>
@@ -544,6 +772,7 @@ export default function NexusRevealScreen({ session, onNext }) {
           citation={active}
           libName={libName}
           onClose={() => setActive(null)}
+          onSeeAlternatives={handleSeeAlternatives}
         />
       )}
     </div>

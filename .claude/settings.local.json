@@ -12,7 +12,8 @@
       "PowerShell(gh auth status 2>&1)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(awk '/^## 7\\\\./,/^## 8\\\\./' \"C:/Users/U6074613/OneDrive - Clarivate Analytics/Documents/Dani/Claude/Nexus-booth/SPEC.md\")"
     ]
   }
 }
