@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import NexusLogo from './shared/NexusLogo'
 
 function BackIcon() {
@@ -23,21 +22,12 @@ function StepDots({ step }) {
   )
 }
 
-export default function ScenarioIntro({ session, onReady, onBack }) {
-  const [countdown, setCountdown] = useState(12)
-  const { discipline, scenario } = session
-
-  useEffect(() => {
-    if (countdown <= 0) { onReady(); return }
-    const id = setTimeout(() => setCountdown(c => c - 1), 1000)
-    return () => clearTimeout(id)
-  }, [countdown, onReady])
-
+export default function ScenarioIntro({ onReady, onBack }) {
   return (
     <div className="kiosk-full bg-[#F3F4F6] flex flex-col">
 
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-12 py-7">
+      {/* Top bar — Nexus Extend logo + Back + step dots */}
+      <div className="flex-shrink-0 flex items-center justify-between px-12 py-7">
         <button
           onPointerDown={onBack}
           className="flex items-center gap-2 text-gray-500 hover:text-gray-800 transition-colors text-lg font-medium min-w-[80px] touch-target"
@@ -53,39 +43,25 @@ export default function ScenarioIntro({ session, onReady, onBack }) {
         </div>
       </div>
 
-      {/* Main */}
-      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col items-center px-14 pt-4 pb-10">
-        <div className="w-full max-w-3xl flex flex-col items-center text-center">
+      {/* Main — centered, restrained width */}
+      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col items-center justify-center px-10 pb-12">
+        <div className="w-full max-w-[600px] flex flex-col items-center text-center">
 
-          {/* Discipline badge */}
-          <div
-            className="w-20 h-20 rounded-3xl flex items-center justify-center text-5xl mb-6"
-            style={{ background: discipline.bgColor }}
+          {/* Headline */}
+          <h1
+            className="font-black text-gray-900 leading-[1.05] tracking-tight mb-8"
+            style={{ fontSize: 'clamp(40px, 4.6vw, 72px)' }}
           >
-            {discipline.icon}
-          </div>
-          <div className="mb-8 px-4 py-1.5 rounded-full bg-gray-200 text-gray-600 text-sm font-semibold uppercase tracking-widest">
-            {discipline.name}
-          </div>
+            Spot the bad citations
+          </h1>
 
-          {/* Instructions — moved above the research question, now larger */}
-          <div className="flex items-start gap-5 bg-[#5E33BF]/8 border border-[#5E33BF]/20 rounded-2xl px-9 py-7 mb-8 text-left w-full">
-            <span className="text-4xl mt-0.5">🎯</span>
-            <div>
-              <p className="text-gray-900 font-bold text-2xl mb-2">Your challenge</p>
-              <p className="text-gray-700 text-lg leading-relaxed">
-                An AI assistant answered this question and cited 5 sources. Read the response, then flag any citations you think have problems — predatory journals, unreviewed preprints, inaccessible papers, or hallucinations.
-              </p>
-            </div>
-          </div>
-
-          {/* Question — smaller, below the challenge */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 px-10 py-7 mb-10 w-full">
-            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-2">Research question</p>
-            <p className="text-[1.15rem] font-medium text-gray-900 leading-snug">
-              "{scenario.question}"
-            </p>
-          </div>
+          {/* Body — two short paragraphs */}
+          <p className="text-gray-600 text-xl leading-relaxed mb-5">
+            AI cited 5 sources. Some are questionable — predatory journals, inaccessible papers, unreviewed preprints, or hallucinations.
+          </p>
+          <p className="text-gray-800 text-xl leading-relaxed font-medium mb-10">
+            Your job: flag them before time runs out.
+          </p>
 
           {/* Stats */}
           <div className="flex items-center gap-6 text-gray-500 text-lg mb-10">
@@ -96,15 +72,19 @@ export default function ScenarioIntro({ session, onReady, onBack }) {
             <span>🏆 Max 400 pts</span>
           </div>
 
-          {/* Countdown / tap-to-start */}
+          {/* CTA */}
           <button
             onPointerDown={onReady}
-            className="relative bg-[#5E33BF] hover:bg-[#4A25A0] active:scale-95 text-white font-black text-2xl px-16 py-6 rounded-2xl shadow-xl transition-all select-none"
-            style={{ boxShadow: '0 16px 48px rgba(94,51,191,0.4)' }}
+            className="bg-[#5E33BF] hover:bg-[#4A25A0] active:scale-95 text-white font-black tracking-wide rounded-2xl shadow-2xl transition-all duration-100 select-none"
+            style={{
+              fontSize: 28,
+              paddingLeft: 88, paddingRight: 88,
+              paddingTop: 26, paddingBottom: 26,
+              boxShadow: '0 20px 60px rgba(94,51,191,0.45)',
+            }}
           >
-            {countdown > 0 ? `Starting in ${countdown}…` : 'GO! →'}
+            I'M READY →
           </button>
-          <p className="mt-4 text-gray-400 text-base">or tap to start now</p>
         </div>
       </div>
     </div>
