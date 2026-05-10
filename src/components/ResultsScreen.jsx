@@ -86,19 +86,22 @@ export default function ResultsScreen({ session, onNext }) {
         <div className="min-w-[100px]" />
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto px-8 py-8">
-        <div className="max-w-4xl mx-auto flex flex-col gap-6">
+      {/* Two-column body — left scrolls, right is fixed-height CTA */}
+      <div className="flex-1 min-h-0 flex">
+
+        {/* Left column — score + citation breakdown (~60%) */}
+        <div className="flex-[3] min-h-0 overflow-y-auto px-8 py-8 flex flex-col gap-6">
 
           {/* Score card */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-7">
+            <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-3">Your score</p>
             <div className="flex items-center justify-between gap-8 flex-wrap">
               <div>
-                <p className="text-gray-500 text-sm font-semibold uppercase tracking-widest mb-1">Your score</p>
-                <p className="text-6xl font-black" style={{ color: '#5E33BF' }}>{breakdown.total}</p>
+                <p className="text-6xl font-black leading-none" style={{ color: '#5E33BF' }}>{breakdown.total}</p>
                 <p className="text-gray-400 text-sm mt-1">points</p>
               </div>
 
-              <div className="flex flex-col gap-2 flex-1 min-w-[200px]">
+              <div className="flex flex-col gap-2 flex-1 min-w-[240px]">
                 <ScoreLine
                   label={`Suspicious citations caught: ${breakdown.correctlyFlagged} / 4`}
                   value={`+${breakdown.correctlyFlagged * 100}`}
@@ -124,28 +127,37 @@ export default function ResultsScreen({ session, onNext }) {
             </div>
           </div>
 
-          {/* Citations breakdown */}
-          <h3 className="text-lg font-black text-gray-700 uppercase tracking-wide px-1">Citation breakdown</h3>
+          {/* Citation breakdown */}
+          <h3 className="text-base font-black text-gray-700 uppercase tracking-wide px-1">Citation breakdown</h3>
           <div className="flex flex-col gap-3">
             {scenario.citations.map(c => (
               <CitationResult key={c.id} citation={c} flagged={flagSet.has(c.id)} />
             ))}
           </div>
+        </div>
 
-          {/* CTA */}
-          <div className="bg-[#5E33BF] rounded-3xl p-8 text-white text-center">
-            <p className="text-2xl font-black mb-2">Now see how Nexus Extend does it</p>
-            <p className="text-[#C4B5F8] text-base mb-6">
+        {/* Right column — Nexus CTA, full height, never scrolls (~40%) */}
+        <aside className="flex-[2] bg-[#5E33BF] flex flex-col items-center justify-center text-center px-10 py-10 text-white">
+          <div className="max-w-md">
+            <p className="text-[#C4B5F8] text-xs font-bold uppercase tracking-widest mb-4">Up next</p>
+            <h3
+              className="font-black leading-[1.1] tracking-tight mb-5"
+              style={{ fontSize: 'clamp(28px, 2.4vw, 42px)' }}
+            >
+              Now see how Nexus Extend does it
+            </h3>
+            <p className="text-[#C4B5F8] text-lg leading-relaxed mb-8">
               Watch it verify the same citations automatically — in seconds.
             </p>
             <button
               onPointerDown={onNext}
-              className="bg-white hover:bg-gray-100 active:scale-95 text-[#5E33BF] font-black text-xl px-12 py-5 rounded-2xl transition-all shadow-lg"
+              className="bg-white hover:bg-gray-100 active:scale-95 text-[#5E33BF] font-black text-xl px-12 py-5 rounded-2xl transition-all shadow-2xl whitespace-nowrap"
+              style={{ boxShadow: '0 16px 48px rgba(0,0,0,0.18)' }}
             >
               Watch it work →
             </button>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   )
