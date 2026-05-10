@@ -83,7 +83,7 @@ export default function WelcomeScreen({ onStart }) {
 
         {/* Sub-headline */}
         <p className="text-[1.6rem] text-gray-500 mb-16 leading-relaxed max-w-2xl">
-          Can you spot what AI got wrong about citations?
+          Nexus spots them in seconds — can you?
         </p>
 
         {/* CTA */}
