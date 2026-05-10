@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import NexusLogo from './shared/NexusLogo'
+import AdminPanel from './AdminPanel'
 import { getTopEntries } from '../lib/leaderboard'
 
 // Strip "Library, City, ST" suffixes so the ticker reads cleanly.
@@ -13,6 +14,21 @@ export default function WelcomeScreen({ onStart }) {
   // first player submits their score (no fake names, no seed data).
   const [entries, setEntries] = useState(() => getTopEntries(3))
   const [tickIdx, setTickIdx] = useState(0)
+
+  // Hidden admin gesture: 5 rapid taps on the Nexus Extend logo.
+  // Taps reset if more than 800ms elapses between them.
+  const [adminOpen, setAdminOpen] = useState(false)
+  const tapsRef = useRef([])
+
+  function handleLogoTap() {
+    const now = Date.now()
+    tapsRef.current = tapsRef.current.filter(t => now - t < 800)
+    tapsRef.current.push(now)
+    if (tapsRef.current.length >= 5) {
+      tapsRef.current = []
+      setAdminOpen(true)
+    }
+  }
 
   useEffect(() => {
     if (entries.length <= 1) return
@@ -59,8 +75,11 @@ export default function WelcomeScreen({ onStart }) {
 
       {/* ── Top bar ─────────────────────────────────────────────── */}
       <div className="relative z-10 flex items-center justify-between px-12 pt-10 pb-0">
-        {/* Nexus branding */}
-        <div className="flex items-center gap-4">
+        {/* Nexus branding — 5 rapid taps on the logo opens the admin panel */}
+        <div
+          className="flex items-center gap-4 cursor-pointer select-none"
+          onPointerDown={handleLogoTap}
+        >
           <NexusLogo size={48} />
           <div>
             <div className="text-gray-900 font-bold text-xl tracking-tight leading-tight">Nexus Extend</div>
@@ -152,6 +171,9 @@ export default function WelcomeScreen({ onStart }) {
           )}
         </div>
       </div>
+
+      {/* Admin panel — opened via 5 rapid taps on the Nexus Extend logo */}
+      {adminOpen && <AdminPanel onClose={() => setAdminOpen(false)} />}
     </div>
   )
 }

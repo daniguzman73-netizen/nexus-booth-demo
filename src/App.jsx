@@ -9,7 +9,8 @@ import NexusRevealScreen  from './components/NexusRevealScreen'
 import LeaderboardEntry   from './components/LeaderboardEntry'
 import FinalScreen        from './components/FinalScreen'
 import useIdleReset       from './lib/useIdleReset'
-import { computeScore }   from './lib/scoring'
+import { scoreBreakdown } from './lib/scoring'
+import { recordSession }  from './lib/leaderboard'
 import scenarios          from './data/scenarios.json'
 
 const INITIAL_SESSION = {
@@ -57,8 +58,17 @@ export default function App() {
   }
 
   function handleChallengeSubmit({ flags, timeUsed }) {
-    const score = computeScore({ citations: session.scenario.citations, flags, timeUsed })
-    setSession(s => ({ ...s, flags, timeUsed, score }))
+    const breakdown = scoreBreakdown({ citations: session.scenario.citations, flags, timeUsed })
+    recordSession({
+      institution:      session.institution || '',
+      discipline:       session.discipline?.name || '',
+      score:            breakdown.total,
+      flagsCount:       flags.length,
+      correctlyFlagged: breakdown.correctlyFlagged,
+      falseFlags:       breakdown.falseFlags,
+      timeUsed,
+    })
+    setSession(s => ({ ...s, flags, timeUsed, score: breakdown.total }))
     setScreen('results')
   }
 
