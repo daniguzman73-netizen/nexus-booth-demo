@@ -1,24 +1,28 @@
 import { useEffect, useState } from 'react'
 import NexusLogo from './shared/NexusLogo'
+import { getTopEntries } from '../lib/leaderboard'
 
-const TICKER_ENTRIES = [
-  { name: 'Priya M.',    institution: 'U of Michigan',    score: 347 },
-  { name: 'David K.',    institution: 'Yale Library',      score: 312 },
-  { name: 'Sarah L.',    institution: 'UT Austin',         score: 298 },
-  { name: 'Marcus T.',   institution: 'Stanford',          score: 285 },
-  { name: 'Ayesha R.',   institution: 'NYU Libraries',     score: 271 },
-  { name: 'James W.',    institution: 'UNC Chapel Hill',   score: 259 },
-]
+// Strip "Library, City, ST" suffixes so the ticker reads cleanly.
+function shortInstitution(s) {
+  if (!s) return ''
+  return s.split(',')[0].trim()
+}
 
 export default function WelcomeScreen({ onStart }) {
+  // Pull real entries from the local leaderboard on mount. Empty until the
+  // first player submits their score (no fake names, no seed data).
+  const [entries, setEntries] = useState(() => getTopEntries(3))
   const [tickIdx, setTickIdx] = useState(0)
 
   useEffect(() => {
-    const id = setInterval(() => setTickIdx(i => (i + 1) % TICKER_ENTRIES.length), 4000)
+    if (entries.length <= 1) return
+    const id = setInterval(() => setTickIdx(i => (i + 1) % entries.length), 5000)
     return () => clearInterval(id)
-  }, [])
+  }, [entries.length])
 
-  const entry = TICKER_ENTRIES[tickIdx]
+  const entry = entries[tickIdx]
+  const rank  = tickIdx + 1
+  const inst  = shortInstitution(entry?.institution)
 
   return (
     <div className="relative kiosk-full bg-[#F3F4F6] flex flex-col overflow-x-hidden">
@@ -112,31 +116,40 @@ export default function WelcomeScreen({ onStart }) {
       <div className="relative z-10 bg-white border-t border-gray-200">
         <div className="flex items-center gap-4 px-10 py-4">
           <span className="text-gray-500 text-sm font-semibold uppercase tracking-widest whitespace-nowrap flex-shrink-0">
-            🏆 Today's Leader
+            🏆 Today's Leaderboard
           </span>
           <span className="w-px h-5 bg-gray-200 flex-shrink-0" />
 
           <div className="flex-1 overflow-hidden">
-            <span key={tickIdx} className="inline-block text-gray-500 text-base animate-fade-in">
-              <span className="text-gray-900 font-semibold">{entry.name}</span>
-              {' '}from{' '}
-              <span className="text-gray-700">{entry.institution}</span>
-              {' — '}
-              <span className="text-[#16AB03] font-bold">{entry.score} pts</span>
-            </span>
+            {entries.length === 0 ? (
+              <span className="inline-block text-gray-500 text-base">
+                🏆 Be the first on today's leaderboard
+              </span>
+            ) : (
+              <span key={tickIdx} className="inline-block text-gray-500 text-base animate-fade-in">
+                <span className="text-gray-700 font-bold">🏆 #{rank}</span>
+                {' '}
+                <span className="text-gray-900 font-semibold">{entry.name}</span>
+                {inst && <>{' '}from{' '}<span className="text-gray-700">{inst}</span></>}
+                {' — '}
+                <span className="text-[#16AB03] font-bold">{entry.score} pts</span>
+              </span>
+            )}
           </div>
 
-          {/* Dots */}
-          <div className="flex-shrink-0 flex items-center gap-1.5">
-            {TICKER_ENTRIES.map((_, i) => (
-              <div
-                key={i}
-                className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                  i === tickIdx ? 'bg-[#5E33BF]' : 'bg-white/15'
-                }`}
-              />
-            ))}
-          </div>
+          {/* Dots — only when rotating through more than one entry */}
+          {entries.length > 1 && (
+            <div className="flex-shrink-0 flex items-center gap-1.5">
+              {entries.map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                    i === tickIdx ? 'bg-[#5E33BF]' : 'bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
