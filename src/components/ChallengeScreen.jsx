@@ -99,9 +99,9 @@ function CitationCard({ citation, flagged, onToggle }) {
             color: isFlagged ? 'white' : '#6B7280',
           }}
         >
-          <span className="text-base leading-none">{isFlagged ? '🚩' : '🏳️'}</span>
-          <span className="text-xs font-bold">
-            {isFlagged ? 'Flagged' : 'Flag'}
+          <span className="text-base leading-none">🚩</span>
+          <span className="text-xs font-bold whitespace-nowrap">
+            {isFlagged ? 'FLAGGED' : 'FLAG'}
           </span>
         </button>
       </div>
@@ -200,7 +200,7 @@ export default function ChallengeScreen({ session, onSubmit }) {
                 <span className="text-xl">🤖</span>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 text-sm">AI Research Assistant</p>
+                <p className="font-semibold text-gray-800 text-sm">AI Chatbot</p>
                 <p className="text-gray-400 text-xs">Generated response — verify before use</p>
               </div>
             </div>
@@ -238,7 +238,7 @@ export default function ChallengeScreen({ session, onSubmit }) {
             </div>
 
             <p className="mt-4 text-gray-400 text-xs text-center">
-              Tap a citation number above or flag a citation on the right → to mark it as suspicious
+              👇 Tap the flag next to any citation that looks suspicious
             </p>
           </div>
         </div>
@@ -247,7 +247,7 @@ export default function ChallengeScreen({ session, onSubmit }) {
         <div className="flex-[2] px-5 py-6 border-l border-gray-200 bg-[#F3F4F6]">
           <div className="flex flex-col gap-3">
             <p className="text-gray-500 text-xs font-semibold uppercase tracking-widest mb-1 px-1">
-              Citations — flag any you doubt
+              Citations — flag any that look suspicious
             </p>
             {scenario.citations.map(c => (
               <CitationCard

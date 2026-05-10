@@ -100,7 +100,7 @@ export default function ResultsScreen({ session, onNext }) {
 
               <div className="flex flex-col gap-2 flex-1 min-w-[200px]">
                 <ScoreLine
-                  label={`Issues correctly flagged ×${breakdown.correctlyFlagged}`}
+                  label={`Suspicious citations caught: ${breakdown.correctlyFlagged} / 4`}
                   value={`+${breakdown.correctlyFlagged * 100}`}
                   positive
                 />

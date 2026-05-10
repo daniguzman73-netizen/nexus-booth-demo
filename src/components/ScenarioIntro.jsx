@@ -52,7 +52,7 @@ export default function ScenarioIntro({ onReady, onBack }) {
             className="font-black text-gray-900 leading-[1.05] tracking-tight mb-8"
             style={{ fontSize: 'clamp(44px, 4.4vw, 80px)' }}
           >
-            Spot the bad citations
+            Spot the questionable citations
           </h1>
 
           {/* Body — two short paragraphs, constrained for natural line breaks */}
