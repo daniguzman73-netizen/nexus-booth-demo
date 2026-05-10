@@ -118,7 +118,7 @@ export default function WelcomeScreen({ onStart }) {
           className="bg-[#5E33BF] hover:bg-[#4A25A0] active:scale-95 text-white font-black tracking-wide rounded-2xl shadow-2xl transition-all duration-100 select-none whitespace-nowrap"
           style={{ fontSize: 28, paddingLeft: 80, paddingRight: 80, paddingTop: 28, paddingBottom: 28, boxShadow: '0 20px 60px rgba(94,51,191,0.45)' }}
         >
-          Can you spot the bad citations →
+          Can you spot the bad citations? →
         </button>
 
         {/* Stats row */}
