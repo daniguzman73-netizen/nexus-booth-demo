@@ -82,17 +82,17 @@ export default function WelcomeScreen({ onStart }) {
         </h1>
 
         {/* Sub-headline */}
-        <p className="text-[1.6rem] text-gray-500 mb-16 leading-relaxed max-w-2xl">
-          Nexus spots them in seconds — can you?
+        <p className="text-[1.6rem] text-gray-500 mb-16 leading-relaxed max-w-3xl">
+          Nexus Extend verifies every citation against trusted academic sources.
         </p>
 
-        {/* CTA */}
+        {/* CTA — width scales with content; nowrap keeps the label on one line */}
         <button
           onPointerDown={onStart}
-          className="bg-[#5E33BF] hover:bg-[#4A25A0] active:scale-95 text-white font-black tracking-wide rounded-2xl shadow-2xl transition-all duration-100 select-none"
-          style={{ fontSize: 28, paddingLeft: 88, paddingRight: 88, paddingTop: 28, paddingBottom: 28, boxShadow: '0 20px 60px rgba(94,51,191,0.45)' }}
+          className="bg-[#5E33BF] hover:bg-[#4A25A0] active:scale-95 text-white font-black tracking-wide rounded-2xl shadow-2xl transition-all duration-100 select-none whitespace-nowrap"
+          style={{ fontSize: 28, paddingLeft: 80, paddingRight: 80, paddingTop: 28, paddingBottom: 28, boxShadow: '0 20px 60px rgba(94,51,191,0.45)' }}
         >
-          TAP TO START →
+          Can you spot the bad citations →
         </button>
 
         {/* Stats row */}
