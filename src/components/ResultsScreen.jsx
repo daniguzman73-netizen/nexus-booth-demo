@@ -134,15 +134,15 @@ export default function ResultsScreen({ session, onNext }) {
 
           {/* CTA */}
           <div className="bg-[#5E33BF] rounded-3xl p-8 text-white text-center">
-            <p className="text-2xl font-black mb-2">Now see how Nexus does it</p>
+            <p className="text-2xl font-black mb-2">Now see how Nexus Extend does it</p>
             <p className="text-[#C4B5F8] text-base mb-6">
-              Watch Nexus Extend verify the same citations automatically — in seconds.
+              Watch it verify the same citations automatically — in seconds.
             </p>
             <button
               onPointerDown={onNext}
               className="bg-white hover:bg-gray-100 active:scale-95 text-[#5E33BF] font-black text-xl px-12 py-5 rounded-2xl transition-all shadow-lg"
             >
-              Watch Nexus →
+              Watch it work →
             </button>
           </div>
         </div>

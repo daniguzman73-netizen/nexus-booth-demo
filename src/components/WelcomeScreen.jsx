@@ -81,8 +81,11 @@ export default function WelcomeScreen({ onStart }) {
           "AI can make mistakes."
         </h1>
 
-        {/* Sub-headline */}
-        <p className="text-[1.6rem] text-gray-500 mb-16 leading-relaxed max-w-3xl">
+        {/* Sub-headline — single line from 1280px to 1920px */}
+        <p
+          className="text-gray-500 mb-16 leading-relaxed whitespace-nowrap"
+          style={{ fontSize: 'clamp(20px, 1.5vw, 26px)' }}
+        >
           Nexus Extend verifies every citation against trusted academic sources.
         </p>
 
