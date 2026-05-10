@@ -86,7 +86,7 @@ export default function DisciplineSelect({ institution, onSelect, onBack }) {
                   onPointerDown={() => { setPressed(disc.id); onSelect(disc) }}
                   onPointerEnter={() => setHovered(disc.id)}
                   onPointerLeave={() => setHovered(null)}
-                  className="group relative bg-white text-left rounded-3xl p-8 transition-all duration-150 select-none"
+                  className="group relative bg-white rounded-3xl px-6 py-7 transition-all duration-150 select-none flex flex-col items-center text-center gap-4"
                   style={{
                     border: `2px solid ${isHovered ? '#C8102E' : 'transparent'}`,
                     boxShadow: isHovered
@@ -95,9 +95,9 @@ export default function DisciplineSelect({ institution, onSelect, onBack }) {
                     transform: isPressed ? 'scale(0.97)' : isHovered ? 'scale(1.02)' : 'scale(1)',
                   }}
                 >
-                  {/* Emoji bubble */}
+                  {/* Emoji bubble — slightly larger now that there's less text */}
                   <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center text-4xl mb-5 transition-transform duration-150"
+                    className="w-20 h-20 rounded-2xl flex items-center justify-center text-[2.75rem] transition-transform duration-150"
                     style={{
                       background: disc.bgColor,
                       transform: isHovered ? 'scale(1.1)' : 'scale(1)',
@@ -107,18 +107,13 @@ export default function DisciplineSelect({ institution, onSelect, onBack }) {
                   </div>
 
                   {/* Discipline name */}
-                  <h3 className="text-[1.55rem] font-black text-gray-900 mb-3 tracking-tight leading-snug">
+                  <h3 className="text-[1.45rem] font-black text-gray-900 tracking-tight leading-tight">
                     {disc.name}
                   </h3>
 
-                  {/* Sample question */}
-                  <p className="text-gray-500 text-[0.98rem] leading-relaxed line-clamp-2">
-                    "{disc.question}"
-                  </p>
-
                   {/* Arrow badge — visible on hover */}
                   <div
-                    className="absolute top-7 right-7 transition-all duration-150"
+                    className="absolute top-5 right-5 transition-all duration-150"
                     style={{
                       opacity: isHovered ? 1 : 0,
                       transform: isHovered ? 'translate(0,0)' : 'translate(-4px, 4px)',
