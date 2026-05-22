@@ -25,6 +25,22 @@ const INITIAL_SESSION = {
   rank:        null,
 }
 
+// Idle-reset timeout per screen. `null` disables the idle reset for that
+// screen (currently only the Challenge screen, whose own game timer
+// governs progression). Any pointer move / tap / keystroke resets the
+// countdown via the useIdleReset hook.
+const IDLE_TIMEOUTS = {
+  welcome:           30_000,
+  institution:       30_000,
+  discipline:        30_000,
+  scenario_intro:    30_000,
+  challenge:         null,
+  results:           30_000,
+  nexus_reveal:      30_000,
+  leaderboard_entry: 60_000,
+  final:             30_000,
+}
+
 export default function App() {
   const [screen,  setScreen]  = useState('welcome')
   const [session, setSession] = useState(INITIAL_SESSION)
@@ -34,8 +50,11 @@ export default function App() {
     setScreen('welcome')
   }, [])
 
-  // Idle reset on every screen except welcome
-  useIdleReset(handleReset, 90_000, screen !== 'welcome')
+  // Idle reset — 30s on passive screens, 60s for the leaderboard form,
+  // disabled on the Challenge screen (the game timer governs that screen).
+  // Any pointer move, tap, or keystroke resets the countdown.
+  const idleMs = IDLE_TIMEOUTS[screen]
+  useIdleReset(handleReset, idleMs ?? 30_000, idleMs != null)
 
   // ── Navigation handlers ────────────────────────────────────────
 
