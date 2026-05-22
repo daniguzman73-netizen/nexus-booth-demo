@@ -2,29 +2,67 @@ import { useState } from 'react'
 import NexusLogo from './shared/NexusLogo'
 import { addEntry, getRank } from '../lib/leaderboard'
 
+// Reasonable inline email check — must look like local@domain.tld.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const isValidEmail = (s) => EMAIL_RE.test(s.trim())
+
 export default function LeaderboardEntry({ session, onSubmit, onSkip }) {
   const [name, setName]         = useState('')
   const [email, setEmail]       = useState('')
   const [optIn, setOptIn]       = useState(false)
-  const [nameError, setNameError] = useState(false)
+  const [nameError, setNameError]   = useState(false)
+  const [emailError, setEmailError] = useState(null) // null | 'required' | 'invalid'
 
   const instName = session.institution
     ? session.institution.split(',')[0].replace(/\s+(Libraries?|Library System?|Librar\w*)$/i, '')
     : ''
 
   function handleSubmit() {
-    if (!name.trim()) { setNameError(true); return }
-    setNameError(false)
+    let blocked = false
+
+    if (!name.trim()) { setNameError(true); blocked = true }
+    else setNameError(false)
+
+    // Email rules:
+    //   - If the opt-in box is ticked, email is required AND must be valid.
+    //   - If the box is unticked but the user typed something, it must still be valid
+    //     (we don't want a bogus address in the export). Empty + unticked is fine.
+    const trimmed = email.trim()
+    if (optIn && !trimmed) {
+      setEmailError('required'); blocked = true
+    } else if (trimmed && !isValidEmail(trimmed)) {
+      setEmailError('invalid'); blocked = true
+    } else {
+      setEmailError(null)
+    }
+
+    if (blocked) return
+
     const entry = addEntry({
       name,
       institution: session.institution || '',
-      email,
+      email: trimmed,
       optIn,
       score: session.score,
       discipline: session.discipline?.name || '',
     })
     const rank = getRank(session.score)
     onSubmit({ entry, rank })
+  }
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value)
+    if (emailError) setEmailError(null)
+  }
+
+  function handleToggleOptIn() {
+    setOptIn(v => {
+      const next = !v
+      // If we're unticking the box, clear any "required" error since the rule
+      // no longer applies. (An 'invalid' error stays — bogus text is still bogus.)
+      if (!next && emailError === 'required') setEmailError(null)
+      return next
+    })
   }
 
   return (
@@ -88,24 +126,53 @@ export default function LeaderboardEntry({ session, onSubmit, onSkip }) {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Email <span className="text-gray-400 font-normal">(optional)</span>
+                Email{' '}
+                {optIn
+                  ? <span className="text-red-500 font-semibold">(required)</span>
+                  : <span className="text-gray-400 font-normal">(optional)</span>
+                }
               </label>
               <input
                 type="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 placeholder="you@library.edu"
-                className="w-full px-5 py-4 rounded-xl border-2 border-gray-200 text-gray-900 text-lg placeholder-gray-400 outline-none transition-all focus:border-[#5E33BF] focus:shadow-[0_0_0_3px_rgba(94,51,191,0.1)]"
+                className="w-full px-5 py-4 rounded-xl border-2 text-gray-900 text-lg placeholder-gray-400 outline-none transition-all"
+                style={{
+                  borderColor: emailError
+                    ? '#C8102E'
+                    : optIn
+                      ? '#5E33BF'
+                      : email
+                        ? '#5E33BF'
+                        : '#E5E7EB',
+                  boxShadow: emailError
+                    ? '0 0 0 3px rgba(200,16,46,0.12)'
+                    : (optIn || email)
+                      ? '0 0 0 3px rgba(94,51,191,0.1)'
+                      : 'none',
+                  background: optIn && !email ? '#F9F5FF' : 'white',
+                }}
                 autoComplete="off"
                 autoCorrect="off"
                 spellCheck={false}
                 maxLength={100}
               />
+              {emailError === 'required' && (
+                <p className="text-red-500 text-xs mt-2 leading-relaxed">
+                  Please enter your email so we can send you Nexus Extend updates — or uncheck the box below to skip.
+                </p>
+              )}
+              {emailError === 'invalid' && (
+                <p className="text-red-500 text-xs mt-2 leading-relaxed">
+                  Please enter a valid email address (e.g. you@library.edu).
+                </p>
+              )}
             </div>
 
             {/* Opt-in */}
             <button
-              onPointerDown={() => setOptIn(v => !v)}
+              onPointerDown={handleToggleOptIn}
               className="flex items-start gap-4 text-left group touch-target"
             >
               <div
