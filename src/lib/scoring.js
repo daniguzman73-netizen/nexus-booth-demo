@@ -1,4 +1,4 @@
-const ISSUE_STATUSES = new Set(['predatory', 'preprint', 'inaccessible', 'unverified'])
+const ISSUE_STATUSES = new Set(['predatory', 'preprint', 'inaccessible', 'unverified', 'retracted'])
 
 export function isIssue(status) {
   return ISSUE_STATUSES.has(status)

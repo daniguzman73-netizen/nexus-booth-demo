@@ -11,6 +11,7 @@ import FinalScreen        from './components/FinalScreen'
 import useIdleReset       from './lib/useIdleReset'
 import { scoreBreakdown } from './lib/scoring'
 import { recordSession }  from './lib/leaderboard'
+import { buildGameScenario } from './lib/scenarioBuilder'
 import scenarios          from './data/scenarios.json'
 import { DISCIPLINES }    from './data/disciplines'
 
@@ -66,7 +67,8 @@ export default function App() {
   // Nexus reveal with a sensible default scenario.
   function handleShowNexusDemo() {
     const discipline = DISCIPLINES.find(d => d.id === 'psychology') ?? DISCIPLINES[0]
-    const scenario   = scenarios.find(s => s.disciplineId === discipline.id) ?? scenarios[0]
+    const base       = scenarios.find(s => s.disciplineId === discipline.id) ?? scenarios[0]
+    const scenario   = buildGameScenario(base)
     setSession({ ...INITIAL_SESSION, discipline, scenario })
     setScreen('nexus_reveal')
   }
@@ -77,7 +79,10 @@ export default function App() {
   }
 
   function handleDisciplineSelect(discipline) {
-    const scenario = scenarios.find(sc => sc.disciplineId === discipline.id) ?? scenarios[0]
+    // Each game pulls a fresh, randomized 5-citation lineup (1 verified + 4
+    // bad, difficulty spread guaranteed) from the discipline's citation pool.
+    const base     = scenarios.find(sc => sc.disciplineId === discipline.id) ?? scenarios[0]
+    const scenario = buildGameScenario(base)
     setSession(s => ({ ...s, discipline, scenario }))
     setScreen('scenario_intro')
   }

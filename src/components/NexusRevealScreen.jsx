@@ -55,6 +55,32 @@ const STATUS = {
     pillBg:  '#FEF2F2',
     pillBorder: '#FECACA',
   },
+  retracted: {
+    label: 'Retracted',
+    short: 'Retracted',
+    icon: '🚫',
+    color:   '#9D174D',
+    bg:      '#FCE7F3',
+    border:  '#F9A8D4',
+    pillBg:  '#FDF2F8',
+    pillBorder: '#FBCFE8',
+  },
+}
+
+// Per-status copy for the citation-popup warning box (non-verified statuses).
+const POPUP_HEADLINES = {
+  predatory:    'Source not verified.',
+  preprint:     'Not yet peer-reviewed.',
+  inaccessible: 'Outside library entitlements.',
+  unverified:   'Source not verified.',
+  retracted:    'Paper retracted.',
+}
+const POPUP_BODIES = {
+  predatory:    'This journal is not indexed in major academic databases and may not meet peer-review standards. Always verify sources before citing them.',
+  preprint:     'This is a preprint — not yet peer-reviewed. Treat findings as preliminary until they appear in a peer-reviewed venue.',
+  inaccessible: 'This source is verified but may not be available through your library entitlements. Look for an accessible alternative.',
+  unverified:   'This source could not be verified in academic databases and may not exist or meet academic research standards. Always verify sources before citing them.',
+  retracted:    'This paper has been retracted by the publisher. Web of Science tracks retractions so you can avoid citing withdrawn research. Use a verified alternative.',
 }
 
 // ───────────────────────────────────────────────────────────────────────────
@@ -230,18 +256,24 @@ function CitationPopup({ citation, libName, onClose, onSeeAlternatives }) {
           </>
         )}
 
-        {/* Unverified popup body */}
-        {!isVerified && (
+        {/* Unverified popup body — copy varies by status */}
+        {!isVerified && (() => {
+          const status = STATUS[citation.status]
+          const headline = POPUP_HEADLINES[citation.status] ?? 'Source not verified.'
+          const body     = POPUP_BODIES[citation.status]     ?? 'This source could not be verified in academic databases. Always verify sources before citing them.'
+          return (
           <>
             <div className="px-5 pb-4">
-              <div className="rounded-lg border bg-[#FEF2F2] border-[#FECACA] px-3.5 py-3">
-                <p className="text-sm font-bold text-[#C8102E] mb-1.5">Source not verified.</p>
-                <p className="text-xs leading-relaxed text-gray-700">
-                  This source could not be verified in academic databases and may not exist or meet academic research standards. Always verify sources before citing them.
-                </p>
+              <div
+                className="rounded-lg border px-3.5 py-3"
+                style={{ background: status.bg, borderColor: status.border }}
+              >
+                <p className="text-sm font-bold mb-1.5" style={{ color: status.color }}>{headline}</p>
+                <p className="text-xs leading-relaxed text-gray-700">{body}</p>
                 <button
                   onPointerDown={() => onSeeAlternatives?.(citation)}
-                  className="mt-2.5 text-xs font-semibold text-[#C8102E] hover:underline"
+                  className="mt-2.5 text-xs font-semibold hover:underline"
+                  style={{ color: status.color }}
                 >
                   See verified alternatives →
                 </button>
@@ -259,7 +291,8 @@ function CitationPopup({ citation, libName, onClose, onSeeAlternatives }) {
               </div>
             </div>
           </>
-        )}
+          )
+        })()}
       </div>
     </div>
   )
@@ -578,7 +611,7 @@ function NexusSidebar({
             </div>
           </div>
           <p className="text-gray-400 text-xs italic px-4 text-center leading-relaxed">
-            Checking against Web of Science and the Central Discovery Index…
+            Checking against the Central Discovery Index and Web of Science…
           </p>
         </div>
       </aside>
@@ -704,7 +737,7 @@ export default function NexusRevealScreen({ session, onNext }) {
         }}
       >
         {scanning
-          ? '● Nexus is scanning citations against Web of Science and the Central Discovery Index…'
+          ? '● Nexus is scanning citations against the Central Discovery Index and Web of Science…'
           : `✓ Scan complete — ${scenario.citations.filter(c => c.status !== 'verified').length} unverified across ${scenario.citations.length} citations, in under 2 seconds`
         }
       </div>

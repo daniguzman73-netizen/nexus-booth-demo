@@ -1,11 +1,12 @@
 import { scoreBreakdown, isIssue } from '../lib/scoring'
 
 const STATUS_CONFIG = {
-  verified:     { label: 'Verified',           color: '#1A7F37', bg: '#DCFCE7', icon: '✓' },
-  predatory:    { label: 'Predatory journal',   color: '#C8102E', bg: '#FEE2E2', icon: '⚠' },
-  preprint:     { label: 'Unreviewed preprint', color: '#D97706', bg: '#FEF3C7', icon: '⚠' },
-  inaccessible: { label: 'Not accessible',      color: '#7C3AED', bg: '#EDE9FE', icon: '🔒' },
+  verified:     { label: 'Verified',               color: '#1A7F37', bg: '#DCFCE7', icon: '✓' },
+  predatory:    { label: 'Predatory journal',      color: '#C8102E', bg: '#FEE2E2', icon: '⚠' },
+  preprint:     { label: 'Unreviewed preprint',    color: '#D97706', bg: '#FEF3C7', icon: '⚠' },
+  inaccessible: { label: 'Not accessible',         color: '#7C3AED', bg: '#EDE9FE', icon: '🔒' },
   unverified:   { label: 'Possible hallucination', color: '#C8102E', bg: '#FEE2E2', icon: '✗' },
+  retracted:    { label: 'Retracted',              color: '#9D174D', bg: '#FCE7F3', icon: '🚫' },
 }
 
 function CitationResult({ citation, flagged }) {

@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
+import { QRCodeSVG } from 'qrcode.react'
 import NexusLogo from './shared/NexusLogo'
 import { getTopEntries } from '../lib/leaderboard'
+
+const NEXUS_URL_DISPLAY = 'clarivate.com/academia-government/nexus-extend'
+const NEXUS_URL_QR      = 'https://clarivate.com/academia-government/nexus-extend/'
 
 const RESET_SECONDS = 15
 
@@ -56,20 +60,24 @@ export default function FinalScreen({ session, onReset }) {
               </div>
             </div>
 
-            {/* QR code placeholder */}
+            {/* QR code — encodes the full URL; visitors scan with their phone */}
             <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col items-center gap-4">
-              <div
-                className="w-32 h-32 bg-gray-100 rounded-2xl flex items-center justify-center"
-                style={{ border: '2px dashed #D1D5DB' }}
-              >
-                <span className="text-4xl">📱</span>
+              <div className="bg-white rounded-2xl p-2 border border-gray-200">
+                <QRCodeSVG
+                  value={NEXUS_URL_QR}
+                  size={128}
+                  bgColor="#FFFFFF"
+                  fgColor="#111827"
+                  level="M"
+                  marginSize={0}
+                />
               </div>
               <p className="text-center text-sm text-gray-500 leading-relaxed">
                 Scan to learn more about<br />
                 <strong className="text-gray-800">Nexus Extend</strong> for your library
               </p>
               <div className="w-full bg-[#5E33BF]/8 rounded-xl px-4 py-2 text-center">
-                <p className="text-[#5E33BF] text-xs font-semibold">clarivate.com/nexus-extend</p>
+                <p className="text-[#5E33BF] text-xs font-semibold break-all">{NEXUS_URL_DISPLAY}</p>
               </div>
             </div>
 
