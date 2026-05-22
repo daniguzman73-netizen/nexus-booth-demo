@@ -72,21 +72,21 @@ export default function WelcomeScreen({ onStart, onShowNexus }) {
         }}
       />
 
-      {/* ── Top bar — 'Clarivate | Nexus Extend' lockup, no ALA badge ── */}
-      <div className="relative z-10 flex items-center justify-start px-12 pt-12 pb-4">
+      {/* ── Top bar — tight 'Clarivate | Nexus Extend' lockup, top-left anchored ── */}
+      <div className="relative z-10 flex items-center justify-start px-8 pt-6 pb-2">
         {/* Lockup — 5 rapid taps opens the admin panel */}
         <div
-          className="flex items-center gap-5 cursor-pointer select-none"
+          className="flex items-center gap-3 cursor-pointer select-none"
           onPointerDown={handleLogoTap}
         >
           <img
             src="/images/clarivate-logo.png"
             alt="Clarivate"
             className="block w-auto"
-            style={{ height: 36 }}
+            style={{ height: 28 }}
           />
-          <span className="w-px h-7 bg-gray-300" />
-          <span className="text-gray-900 font-bold text-2xl tracking-tight leading-none">Nexus Extend</span>
+          <span className="w-px h-5 bg-gray-300" />
+          <span className="text-gray-800 font-medium text-base tracking-tight leading-none">Nexus Extend</span>
         </div>
       </div>
 
