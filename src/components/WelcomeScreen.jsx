@@ -40,7 +40,7 @@ export default function WelcomeScreen({ onStart, onShowNexus }) {
   const inst  = shortInstitution(entry?.institution)
 
   return (
-    <div className="relative kiosk-full bg-[#F3F4F6] flex flex-col overflow-x-hidden">
+    <div className="relative kiosk-full bg-[#F3F4F6] flex flex-col overflow-hidden">
 
       {/* ── Background orbs ─────────────────────────────────────── */}
       <div
@@ -91,12 +91,12 @@ export default function WelcomeScreen({ onStart, onShowNexus }) {
         </div>
       </div>
 
-      {/* ── Main content — extra top padding gives clear separation from the header ── */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-16 pt-20">
+      {/* ── Main content — tightened spacing so the ticker always fits ── */}
+      <div className="relative z-10 flex-1 min-h-0 flex flex-col items-center justify-center text-center px-16 py-4">
 
         {/* Headline — always one line at 1280px+ */}
         <h1
-          className="font-black text-gray-900 leading-[1.05] tracking-tight mb-8 whitespace-nowrap"
+          className="font-black text-gray-900 leading-[1.05] tracking-tight mb-5 whitespace-nowrap"
           style={{ fontSize: 'clamp(56px, 5.6vw, 108px)' }}
         >
           "AI can make mistakes."
@@ -104,7 +104,7 @@ export default function WelcomeScreen({ onStart, onShowNexus }) {
 
         {/* Sub-headline — single line from 1280px to 1920px */}
         <p
-          className="text-gray-500 mb-16 leading-relaxed whitespace-nowrap"
+          className="text-gray-500 mb-10 leading-relaxed whitespace-nowrap"
           style={{ fontSize: 'clamp(20px, 1.5vw, 26px)' }}
         >
           Nexus Extend verifies every citation against trusted academic sources.
@@ -114,21 +114,21 @@ export default function WelcomeScreen({ onStart, onShowNexus }) {
         <button
           onPointerDown={onStart}
           className="bg-[#5E33BF] hover:bg-[#4A25A0] active:scale-95 text-white font-black tracking-wide rounded-2xl shadow-2xl transition-all duration-100 select-none whitespace-nowrap"
-          style={{ fontSize: 28, paddingLeft: 80, paddingRight: 80, paddingTop: 28, paddingBottom: 28, boxShadow: '0 20px 60px rgba(94,51,191,0.45)' }}
+          style={{ fontSize: 28, paddingLeft: 80, paddingRight: 80, paddingTop: 24, paddingBottom: 24, boxShadow: '0 20px 60px rgba(94,51,191,0.45)' }}
         >
-          Press start →
+          Can you spot the bad citations? →
         </button>
 
         {/* Skip-to-demo link */}
         <button
           onPointerDown={onShowNexus}
-          className="mt-5 text-gray-500 hover:text-[#5E33BF] text-base font-medium underline-offset-4 hover:underline transition-colors select-none"
+          className="mt-4 text-gray-500 hover:text-[#5E33BF] text-base font-medium underline-offset-4 hover:underline transition-colors select-none"
         >
           Show me Nexus in action →
         </button>
 
         {/* Stats row */}
-        <div className="mt-10 flex items-center gap-7 text-gray-600 text-lg">
+        <div className="mt-6 flex items-center gap-7 text-gray-600 text-lg">
           <span>⏱ 60 seconds</span>
           <span className="w-1 h-1 rounded-full bg-gray-700" />
           <span>📄 5 citations to check</span>
