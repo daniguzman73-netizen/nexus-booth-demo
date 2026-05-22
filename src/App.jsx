@@ -12,6 +12,7 @@ import useIdleReset       from './lib/useIdleReset'
 import { scoreBreakdown } from './lib/scoring'
 import { recordSession }  from './lib/leaderboard'
 import scenarios          from './data/scenarios.json'
+import { DISCIPLINES }    from './data/disciplines'
 
 const INITIAL_SESSION = {
   institution: null,
@@ -40,6 +41,15 @@ export default function App() {
 
   function handleStart() {
     setScreen('institution')
+  }
+
+  // Skip-to-demo link on the welcome screen: jump directly to the live
+  // Nexus reveal with a sensible default scenario.
+  function handleShowNexusDemo() {
+    const discipline = DISCIPLINES.find(d => d.id === 'psychology') ?? DISCIPLINES[0]
+    const scenario   = scenarios.find(s => s.disciplineId === discipline.id) ?? scenarios[0]
+    setSession({ ...INITIAL_SESSION, discipline, scenario })
+    setScreen('nexus_reveal')
   }
 
   function handleInstitutionSelect(institution) {
@@ -96,29 +106,24 @@ export default function App() {
     <div className="kiosk-full">
 
       {screen === 'welcome' && (
-        <WelcomeScreen onStart={handleStart} />
+        <WelcomeScreen onStart={handleStart} onShowNexus={handleShowNexusDemo} />
       )}
 
       {screen === 'institution' && (
         <InstitutionSelect
           onSelect={handleInstitutionSelect}
-          onBack={() => setScreen('welcome')}
         />
       )}
 
       {screen === 'discipline' && (
         <DisciplineSelect
-          institution={session.institution}
           onSelect={handleDisciplineSelect}
-          onBack={() => setScreen('institution')}
         />
       )}
 
       {screen === 'scenario_intro' && (
         <ScenarioIntro
-          session={session}
           onReady={handleScenarioReady}
-          onBack={() => setScreen('discipline')}
         />
       )}
 

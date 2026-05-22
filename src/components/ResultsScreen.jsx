@@ -1,4 +1,3 @@
-import NexusLogo from './shared/NexusLogo'
 import { scoreBreakdown, isIssue } from '../lib/scoring'
 
 const STATUS_CONFIG = {
@@ -76,17 +75,7 @@ export default function ResultsScreen({ session, onNext }) {
   return (
     <div className="kiosk-full bg-[#F3F4F6] flex flex-col">
 
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-8 py-5 bg-white border-b border-gray-100">
-        <div className="flex items-center gap-3">
-          <NexusLogo size={30} />
-          <span className="text-gray-700 font-semibold">Nexus Extend</span>
-        </div>
-        <h2 className="text-xl font-black text-gray-900">Your Results</h2>
-        <div className="min-w-[100px]" />
-      </div>
-
-      {/* Two-column body — left scrolls, right is fixed-height CTA */}
+      {/* Two-column body (no top chrome) — left scrolls, right is fixed CTA */}
       <div className="flex-1 min-h-0 flex">
 
         {/* Left column — score + citation breakdown (~60%) */}

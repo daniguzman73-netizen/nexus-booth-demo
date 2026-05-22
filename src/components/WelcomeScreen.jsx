@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import NexusLogo from './shared/NexusLogo'
 import AdminPanel from './AdminPanel'
 import { getTopEntries } from '../lib/leaderboard'
 
@@ -9,7 +8,7 @@ function shortInstitution(s) {
   return s.split(',')[0].trim()
 }
 
-export default function WelcomeScreen({ onStart }) {
+export default function WelcomeScreen({ onStart, onShowNexus }) {
   // Pull real entries from the local leaderboard on mount. Empty until the
   // first player submits their score (no fake names, no seed data).
   const [entries, setEntries] = useState(() => getTopEntries(3))
@@ -73,23 +72,16 @@ export default function WelcomeScreen({ onStart }) {
         }}
       />
 
-      {/* ── Top bar ─────────────────────────────────────────────── */}
-      <div className="relative z-10 flex items-center justify-between px-12 pt-10 pb-0">
-        {/* Nexus branding — 5 rapid taps on the logo opens the admin panel */}
+      {/* ── Top bar — 'Clarivate | Nexus Extend' lockup, no ALA badge ── */}
+      <div className="relative z-10 flex items-center justify-start px-12 pt-10 pb-0">
+        {/* Lockup — 5 rapid taps opens the admin panel */}
         <div
           className="flex items-center gap-4 cursor-pointer select-none"
           onPointerDown={handleLogoTap}
         >
-          <NexusLogo size={48} />
-          <div>
-            <div className="text-gray-900 font-bold text-xl tracking-tight leading-tight">Nexus Extend</div>
-            <div className="text-gray-500 text-sm tracking-wide">by Clarivate</div>
-          </div>
-        </div>
-
-        {/* Conference badge */}
-        <div className="flex items-center gap-3 border border-[#5E33BF]/30 bg-[#5E33BF]/8 rounded-xl px-5 py-2.5">
-          <span className="text-[#5E33BF] text-sm font-semibold tracking-widest uppercase">ALA 2026</span>
+          <span className="text-[#5E33BF] font-black text-2xl tracking-tight leading-none">Clarivate</span>
+          <span className="w-px h-7 bg-gray-300" />
+          <span className="text-gray-900 font-bold text-2xl tracking-tight leading-none">Nexus Extend</span>
         </div>
       </div>
 
@@ -118,7 +110,15 @@ export default function WelcomeScreen({ onStart }) {
           className="bg-[#5E33BF] hover:bg-[#4A25A0] active:scale-95 text-white font-black tracking-wide rounded-2xl shadow-2xl transition-all duration-100 select-none whitespace-nowrap"
           style={{ fontSize: 28, paddingLeft: 80, paddingRight: 80, paddingTop: 28, paddingBottom: 28, boxShadow: '0 20px 60px rgba(94,51,191,0.45)' }}
         >
-          Can you spot the bad citations? →
+          Press start →
+        </button>
+
+        {/* Skip-to-demo link */}
+        <button
+          onPointerDown={onShowNexus}
+          className="mt-5 text-gray-500 hover:text-[#5E33BF] text-base font-medium underline-offset-4 hover:underline transition-colors select-none"
+        >
+          Show me Nexus in action →
         </button>
 
         {/* Stats row */}

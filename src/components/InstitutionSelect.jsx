@@ -1,5 +1,4 @@
 import { useState, useMemo, useRef } from 'react'
-import NexusLogo from './shared/NexusLogo'
 import institutions from '../data/institutions.json'
 
 function SearchIcon() {
@@ -28,33 +27,7 @@ function CheckIcon() {
   )
 }
 
-function BackIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <line x1="19" y1="12" x2="5" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <polyline points="12 19 5 12 12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-function StepDots({ step }) {
-  return (
-    <div className="flex items-center gap-2">
-      {[0, 1, 2].map((i) => (
-        <span key={i} className="flex items-center gap-2">
-          <span
-            className={`w-3 h-3 rounded-full transition-colors ${i <= step ? 'bg-nexus-red' : 'bg-gray-300'}`}
-          />
-          {i < 2 && (
-            <span className={`w-8 h-1 rounded-full transition-colors ${i < step ? 'bg-nexus-red' : 'bg-gray-200'}`} />
-          )}
-        </span>
-      ))}
-    </div>
-  )
-}
-
-export default function InstitutionSelect({ onSelect, onBack }) {
+export default function InstitutionSelect({ onSelect }) {
   const [query, setQuery]       = useState('')
   const [selected, setSelected] = useState(null)
   const [open, setOpen]         = useState(false)
@@ -85,25 +58,8 @@ export default function InstitutionSelect({ onSelect, onBack }) {
   return (
     <div className="kiosk-full bg-[#F3F4F6] flex flex-col">
 
-      {/* ── Top bar ─────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between px-12 py-8">
-        <button
-          onPointerDown={onBack}
-          className="flex items-center gap-2 text-gray-500 hover:text-gray-800 transition-colors text-lg font-medium min-w-[80px] touch-target"
-        >
-          <BackIcon /> Back
-        </button>
-        <div className="flex items-center gap-3">
-          <NexusLogo size={36} />
-          <span className="text-gray-700 font-semibold text-lg">Nexus Extend</span>
-        </div>
-        <div className="min-w-[80px] flex justify-end">
-          <StepDots step={0} />
-        </div>
-      </div>
-
-      {/* ── Main content ────────────────────────────────────────── */}
-      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col items-center px-16 pt-8 pb-16">
+      {/* ── Main content (no top chrome) ────────────────────────── */}
+      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col items-center justify-center px-16 py-16">
         <div className="w-full max-w-2xl">
 
           <h1 className="text-[3.2rem] font-black text-gray-900 mb-3 tracking-tight leading-tight">

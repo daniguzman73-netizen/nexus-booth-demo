@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react'
-import NexusLogo from './shared/NexusLogo'
 import Timer from './shared/Timer'
 
 function parseResponse(text) {
@@ -162,27 +161,16 @@ export default function ChallengeScreen({ session, onSubmit }) {
           inside it so the timer stays visible during scroll. */}
       <div className="flex-1 min-h-0 overflow-y-auto flex flex-col">
 
-      {/* Top bar — sticky inside the inner scroll container */}
-      <div className="sticky top-0 z-20 flex-shrink-0 flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
-        <div className="flex items-center gap-3">
-          <NexusLogo size={30} />
-          <span className="text-gray-700 font-semibold">Nexus Extend</span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <span className="text-gray-500 text-sm font-medium">{session.discipline.icon} {session.discipline.name}</span>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <TimerRing seconds={timeLeft} />
-          <button
-            onPointerDown={handleSubmit}
-            disabled={submitted}
-            className="bg-nexus-red hover:bg-nexus-red-dark active:scale-95 text-white font-bold text-base px-7 py-3 rounded-xl transition-all disabled:opacity-50 touch-target"
-          >
-            Submit →
-          </button>
-        </div>
+      {/* Top bar — sticky, minimalist: timer + submit only (no chrome) */}
+      <div className="sticky top-0 z-20 flex-shrink-0 flex items-center justify-end gap-4 px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
+        <TimerRing seconds={timeLeft} />
+        <button
+          onPointerDown={handleSubmit}
+          disabled={submitted}
+          className="bg-nexus-red hover:bg-nexus-red-dark active:scale-95 text-white font-bold text-base px-7 py-3 rounded-xl transition-all disabled:opacity-50 touch-target"
+        >
+          Submit →
+        </button>
       </div>
 
       <Timer running={!submitted} onTick={handleTick} onExpire={handleSubmit} seconds={60} />
